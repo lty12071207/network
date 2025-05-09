@@ -4,6 +4,8 @@ import random
 import numpy as np
 import json
 import time
+from collections import defaultdict
+import heapq
 class NetworkPlanner:
     def __init__(self, num_nodes, num_links):
         """
@@ -60,7 +62,6 @@ class NetworkPlanner:
             confignode = json.load(f)
         num_links = len(configlink)
         num_nodes = len(confignode)
-        print(num_nodes,num_links)
         planner = cls(num_nodes, num_links)
         planner.G = nx.Graph()
 
@@ -71,8 +72,7 @@ class NetworkPlanner:
             gpu_power=node["computing"]["gpu_power"]
             capacity=node["storage"]["capacity"]
             performance=node["storage"]["performance"]
-            #cost = node["cost"]
-            cost=12138
+            cost = node["cost"]
             # 从配置文件读取节点信息并添加到图中
             planner.G.add_node(node_id, computing_power=computing_power, id=node_id, cost=cost,gpu_power=gpu_power,capacity=capacity,performance=performance)
 
@@ -84,61 +84,63 @@ class NetworkPlanner:
             cost = int(edge["weight"])
             bandwith=edge['bw']
             # 从配置文件读取边信息并添加到图中
-            print()
             planner.G.add_edge(u, v, propagation_delay=propagation_delay, cost=cost,bandwith=bandwith)
 
         return planner
 
-    def visualize(self, path=None):
+    def visualize(self, path=None, selected_nodes=None):
         """
         可视化网络拓扑图
         :param path: 可选参数，要高亮显示的路径
+        :param selected_nodes: 可选参数，选择的计算节点列表
         """
         # 使用弹簧布局算法确定节点位置
-        pos = nx.spring_layout(self.G)
+        pos = nx.spring_layout(self.G, k=0.5, iterations=50)
 
         # 绘制节点
         node_colors = []
         for node in self.G.nodes():
-            if path and node in path:
-                # 若节点在指定路径中，标记为红色
+            if path and node == path[0]:
+                # 若节点是路径的起点，标记为黄色
+                node_colors.append('yellow')
+            elif path and node == path[-1]:
+                # 若节点是路径的终点，标记为黄色
+                node_colors.append('yellow')
+            elif selected_nodes and node in selected_nodes:
+                # 若节点在选择的计算节点列表中，标记为绿色
+                node_colors.append('green')
+            elif path and node in path:
+                # 若节点在指定路径中（但不是起点或终点），标记为红色
                 node_colors.append('red')
             else:
                 # 否则标记为蓝色
                 node_colors.append('blue')
 
+        # 创建一个新的图形对象
+        plt.figure()
+        plt.title('Network Topology')
+        plt.axis('off')  # 隐藏坐标轴
+
         # 绘制图的节点
         nx.draw(self.G, pos, with_labels=True, node_color=node_colors, node_size=700)
 
         # 绘制边
-        edge_colors = []
         if path:
             # 获取路径中的边
             path_edges = list(zip(path, path[1:]))
             for edge in self.G.edges():
                 if (edge in path_edges) or (edge[::-1] in path_edges):
                     # 若边在指定路径中，标记为红色
-                    edge_colors.append('red')
-                else:
-                    # 否则标记为黑色
-                    edge_colors.append('black')
-            # 绘制带颜色的边
-            nx.draw_networkx_edges(self.G, pos, edge_color=edge_colors, width=2)
+                    nx.draw_networkx_edges(self.G, pos, edgelist=[edge], edge_color='red', width=2)
         else:
             # 若未指定路径，绘制黑色边
             nx.draw_networkx_edges(self.G, pos, edge_color='black', width=2)
 
-        # 添加节点标签（计算能力）
-        # labels = {node: f"ID: {node}\nCost: {data['cost']}" for node, data in self.G.nodes(data=True)}
-        # # 绘制节点标签
-        # nx.draw_networkx_labels(self.G, pos, labels=labels, font_size=8)
-        #
-        # # 添加边标签（传播时延）
-        # edge_labels = {(u, v): f"{d['cost']}" for u, v, d in self.G.edges(data=True)}
-        # # 绘制边标签
-        # nx.draw_networkx_edge_labels(self.G, pos, edge_labels=edge_labels, font_size=7)
+        # 添加节点标签（ID和其他属性）
+        labels = {node: f"ID: {node}\nGPU: {data['gpu_power']}\nCost: {data['cost']}" for node, data in self.G.nodes(data=True)}
+        nx.draw_networkx_labels(self.G, pos, labels=labels, font_size=8)
 
-        plt.title('Network Topology')
+        # 显示图形
         plt.show()
 
     def get_all_routes(self, source, destination):
@@ -212,115 +214,100 @@ class NetworkPlanner:
             # 若边不存在，抛出异常
             raise ValueError(f"节点 {u} 和 {v} 之间不存在链路")
 
-    def ant_colony_optimization(self, source, destination, packet_size, num_computing_nodes, num_ants=20, max_iter=50,alpha=1, beta=2, rho=0.5):
+    def find_time_optimal_route(self, src, dst, required_compute_nodes, min_computing_power, min_bandwidth):
         """
-        使用蚁群算法搜索最小成本路径
-        :param source: 源节点 ID
-        :param destination: 目的节点 ID
-        :param packet_size: 数据包大小
-        :param num_computing_nodes: 计算节点数
-        :param num_ants: 蚂蚁数量
-        :param max_iter: 最大迭代次数
-        :param alpha: 信息素重要程度因子
-        :param beta: 启发式因子
-        :param rho: 信息素挥发因子
-        :return: 最小成本路径，如果不存在满足条件的路径则返回 None
+        改进的贪心算法实现：优先选择GPU最高的计算节点
+        :param src: 源节点ID
+        :param dst: 目的节点ID
+        :param required_compute_nodes: 需要选择的计算节点数量
+        :param min_computing_power: 计算节点最低GPU要求
+        :param min_bandwidth: 链路最低带宽要求
+        :return: (路径节点列表, 使用的计算节点列表, 总时间)
         """
-        num_nodes = self.num_nodes
-        # 初始化信息素矩阵
-        pheromone = np.ones((num_nodes, num_nodes))
-        best_path = None
-        best_cost = float('inf')
+        # 参数校验
+        self._validate_nodes_exist([src, dst])
+        if required_compute_nodes < 0:
+            raise ValueError("需要计算节点数不能为负")
 
-        for _ in range(max_iter):
-            all_ant_paths = []
-            all_ant_cost = []
+        # 生成所有简单路径并筛选
+        valid_paths = []
+        for path in nx.all_simple_paths(self.G, src, dst):
+            # 提取中间节点（排除源和目的）
+            intermediates = path[1:-1]
 
-            for _ in range(num_ants):
-                # 初始化蚂蚁路径，从源节点开始
-                path = [source]
-                current = source
-                while current != destination:
-                    # 获取当前节点的所有邻居节点
-                    neighbors = list(self.G.neighbors(current))
-                    # 获取未访问过的邻居节点
-                    unvisited_neighbors = [n for n in neighbors if n not in path]
-                    if not unvisited_neighbors:
-                        break
-                    probabilities = []
-                    for neighbor in unvisited_neighbors:
-                        # 计算启发式信息：总成本的倒数
-                        edge_cost = self.G[current][neighbor]['cost']
-                        node_computing_cost = self.G.nodes[neighbor]['cost']
+            # 筛选满足GPU的节点
+            valid_nodes = [n for n in intermediates
+                           if self.G.nodes[n]['gpu_power'] >= min_computing_power]
 
-                        total_cost = edge_cost + node_computing_cost
-                        heuristic = 1 / total_cost
-                        pheromone_value = pheromone[current][neighbor]
-                        probability = (pheromone_value ** alpha) * (heuristic ** beta)
-                        probabilities.append(probability)
-                    # 计算概率分布
-                    probabilities = np.array(probabilities) / np.sum(probabilities)
-                    # 根据概率选择下一个节点
-                    next_node = np.random.choice(unvisited_neighbors, p=probabilities)
-                    path.append(next_node)
-                    current = next_node
-                print(path)
-                if len(path) - 2 >= num_computing_nodes and path[-1] == destination:
-                    all_ant_paths.append(path)
-                    total_cost = self.calculate_total_cost(path)
-                    all_ant_cost.append(total_cost)
-                    if total_cost < best_cost:
-                        best_cost = total_cost
-                        best_path = path
+            # 检查计算节点数量
+            if len(valid_nodes) < required_compute_nodes:
+                continue
 
-            # 更新信息素
-            pheromone *= (1 - rho)  # 信息素挥发
-            if all_ant_paths:
-                for path, cost in zip(all_ant_paths, all_ant_cost):
-                    delta_pheromone = 1 / cost
-                    for i in range(len(path) - 1):
-                        u, v = path[i], path[i + 1]
-                        pheromone[u][v] += delta_pheromone
-                        pheromone[v][u] += delta_pheromone
+            # 检查带宽约束
+            if not self._check_bandwidth(path, min_bandwidth):
+                continue
 
-        return best_path
+            # 记录候选路径及其特征
+            valid_paths.append((
+                path,
+                self._select_best_nodes(valid_nodes, required_compute_nodes)
+            ))
 
-    def calculate_total_cost(self, path):
-        """
-        计算路径的总成本
-        :param path: 路径
-        :return: 总成本
-        """
-        total_cost = 0
-        for i in range(len(path) - 1):
-            total_cost += self.get_link_propagation_cost(path[i], path[i + 1])
-        for node in path[1:-1]:
-            total_cost += self.get_node_computing_cost(node)
-        return total_cost
+        if not valid_paths:
+            return [], [], float('inf')
+
+        # 选择GPU总和最大的路径
+        best_path, best_nodes = max(valid_paths,key=lambda x: sum(self.G.nodes[n]['gpu_power'] for n in x[1]))
+
+        return best_path, best_nodes
+
+    def _select_best_nodes(self, candidates, required):
+        """选择GPU最高的前required个节点"""
+        sorted_nodes = sorted(candidates,
+                              key=lambda n: self.G.nodes[n]['gpu_power'],
+                              reverse=True)
+        return sorted_nodes[:required]
+
+    def _check_bandwidth(self, path, min_bw):
+        """检查路径带宽是否达标"""
+        for u, v in zip(path, path[1:]):
+            if int(self.G.edges[u, v]['bandwith']) < min_bw:
+                return False
+        return True
+
+    def _calculate_total_time(self, path, compute_nodes):
+        """计算路径总时间（传输时间+计算时间）"""
+        # 传输时间（所有链路时延之和）
+        transmission = sum(self.G.edges[u, v]['propagation_delay']
+                           for u, v in zip(path, path[1:]))
+
+        # 计算时间（假设每个节点处理单位数据量）
+        computation = sum(1 / self.G.nodes[n]['gpu_power'] for n in compute_nodes)
+
+        return transmission + computation
+
+    def _validate_nodes_exist(self, nodes):
+        """验证节点存在性"""
+        for node in nodes:
+            if node not in self.G.nodes:
+                raise ValueError(f"节点 {node} 不存在")
 
 # 示例用法
 if __name__ == "__main__":
     # 从配置文件中读取网络信息
     planner = NetworkPlanner.from_config_file('../api/topo.json','../api/node_config.json')
-    #planner.visualize()
-    start_time=time.time();
-    # 路径规划需求
-    source = 0
-    destination = 3
-    packet_size = 1  # 要处理的数据包大小
-    num_computing_nodes = 2  # 源、目的以及中间3个计算节点（共5个）
-
-    # 使用蚁群算法寻找路径
-    path = planner.ant_colony_optimization(source, destination, packet_size, num_computing_nodes)
+    path, compute_nodes= planner.find_time_optimal_route(
+        src=0,
+        dst=18,
+        required_compute_nodes=4,
+        min_computing_power=700,  # 要求计算节点算力≥800
+        min_bandwidth=10  # 要求链路带宽≥10
+    )
 
     if path:
-        min_cost = planner.calculate_total_cost(path)
-        print("找到的路径：", path)
-        print("最小成本为：", min_cost)
-        print("计算节点为：", path[1:-1])
-        end_time=time.time();
-        print('时间差为'+str(end_time-start_time))
-        # 可视化拓扑图，高亮显示路径
-        planner.visualize(path=path)
+        print(f"最优路径: {path}")
+        print(f"使用的计算节点: {compute_nodes}")
+        #print(f"预估总时间: {total_time:.2f} 单位时间")
+        planner.visualize(path=path,selected_nodes=compute_nodes)
     else:
-        print("不存在路径")
+        print("未找到符合要求的路径")
