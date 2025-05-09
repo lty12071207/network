@@ -310,4 +310,4 @@ if __name__ == "__main__":
         #print(f"预估总时间: {total_time:.2f} 单位时间")
         planner.visualize(path=path,selected_nodes=compute_nodes)
     else:
-        print("未找到符合要求的路径")
+        print("未找到符合要求的路径     ")
