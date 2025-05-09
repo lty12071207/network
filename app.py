@@ -46,10 +46,9 @@ def handle_post():
     path, compute_nodes = planner.find_time_optimal_route(
         src=0,
         dst=18,
-        required_compute_nodes=4,
+        required_compute_nodes4=2,
         min_computing_power=10,  # 要求计算节点算力≥800
-        min_bandwidth=10，
-        # 要求链路带宽≥10
+        min_bandwidth=10 # 要求链路带宽≥10
     )
     # 在控制台输出接收到的参数
     print("Received data:")
