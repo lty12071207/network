@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>多路径汇聚节点示例</title>
+    <script src="https://cdn.staticfile.org/echarts/5.4.0/echarts.min.js"></script>
+</head>
+<body>
+    <div id="main" style="width: 800px;height:600px;"></div>
+    <script>
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 预处理数据：计算每个节点的连接数
+        const nodes = [
+            { id: 'A', name: 'A' },
+            { id: 'B', name: 'B' },
+            { id: 'C', name: 'C', symbolSize: 70 },  // 放大中心节点
+            { id: 'D', name: 'D' },
+            { id: 'E', name: 'E' }
+        ];
+
+        const links = [
+            { source: 'A', target: 'C', lineStyle: { color: '#FFD700' }, label: { show: true, formatter: '路径1' } },
+            { source: 'B', target: 'C', lineStyle: { color: '#FFD700' }, label: { show: true, formatter: '路径2' } },
+            { source: 'D', target: 'C', lineStyle: { color: '#00FF00' }, label: { show: true, formatter: '路径3' } },
+            { source: 'C', target: 'E', lineStyle: { color: '#4169E1' } }  // 额外示例路径
+        ];
+
+        // 动态添加连接数统计
+        nodes.forEach(node => {
+            node.connectionCount = links.filter(
+                link => link.source === node.id || link.target === node.id
+            ).length;
+            node.name += ` (${node.connectionCount})`;  // 在标签显示连接数
+        });
+
+        const option = {
+            title: { text: '多路径汇聚可视化' },
+            tooltip: {
+                formatter: params => {
+                    if (params.dataType === 'node') {
+                        const connections = links.filter(link =>
+                            link.source === params.data.id ||
+                            link.target === params.data.id
+                        );
+                        return `节点 ${params.data.id}<br>连接数：${params.data.connectionCount}<br>` +
+                            connections.map((link, index) =>
+                                `路径${index+1}: ${link.label?.formatter || '未命名'} <span style="color:${link.lineStyle.color}">■</span>`
+                            ).join('<br>');
+                    }
+                    return params.value;
+                }
+            },
+            series: [{
+                type: 'graph',
+                layout: 'circular',  // 环形布局更清晰
+                roam: true,
+                label: { show: true, fontSize: 14 },
+                edgeLabel: { show: true },
+                lineStyle: { opacity: 0.9, curveness: 0.3 },
+                emphasis: {  // 高亮设置
+                    label: { show: true, fontSize: 18 },
+                    lineStyle: { width: 3 }
+                },
+                data: nodes,
+                links: links.map(link => ({
+                    ...link,
+                    label: { ...link.label, color: link.lineStyle.color }  // 同步边标签颜色
+                }))
+            }]
+        };
+
+        myChart.setOption(option);
+    </script>
+</body>
+</html>

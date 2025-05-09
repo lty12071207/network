@@ -1,0 +1,222 @@
+[
+    {
+        "id": 0,
+        "storage": {
+            "capacity": "35TB",
+            "performance": "842MB/s"
+        },
+        "computing": {
+            "cpu_power": "12 cores 3167MHz",
+            "gpu_power": "3.36 TFLOPS"
+        }
+    },
+    {
+        "id": 1,
+        "storage": {
+            "capacity": "6TB",
+            "performance": "273MB/s"
+        },
+        "computing": {
+            "cpu_power": "7 cores 2042MHz",
+            "gpu_power": "\u65e0"
+        }
+    },
+    {
+        "id": 2,
+        "storage": {
+            "capacity": "45TB",
+            "performance": "793MB/s"
+        },
+        "computing": {
+            "cpu_power": "14 cores 3217MHz",
+            "gpu_power": "2.95 TFLOPS"
+        }
+    },
+    {
+        "id": 3,
+        "storage": {
+            "capacity": "5TB",
+            "performance": "134MB/s"
+        },
+        "computing": {
+            "cpu_power": "1 cores 2221MHz",
+            "gpu_power": "0.45 TFLOPS"
+        }
+    },
+    {
+        "id": 4,
+        "storage": {
+            "capacity": "4TB",
+            "performance": "138MB/s"
+        },
+        "computing": {
+            "cpu_power": "3 cores 1760MHz",
+            "gpu_power": "\u65e0"
+        }
+    },
+    {
+        "id": 5,
+        "storage": {
+            "capacity": "5TB",
+            "performance": "305MB/s"
+        },
+        "computing": {
+            "cpu_power": "7 cores 2701MHz",
+            "gpu_power": "1.41 TFLOPS"
+        }
+    },
+    {
+        "id": 6,
+        "storage": {
+            "capacity": "3TB",
+            "performance": "194MB/s"
+        },
+        "computing": {
+            "cpu_power": "4 cores 1554MHz",
+            "gpu_power": "0.29 TFLOPS"
+        }
+    },
+    {
+        "id": 7,
+        "storage": {
+            "capacity": "1TB",
+            "performance": "165MB/s"
+        },
+        "computing": {
+            "cpu_power": "4 cores 1729MHz",
+            "gpu_power": "\u65e0"
+        }
+    },
+    {
+        "id": 8,
+        "storage": {
+            "capacity": "4TB",
+            "performance": "226MB/s"
+        },
+        "computing": {
+            "cpu_power": "2 cores 1969MHz",
+            "gpu_power": "\u65e0"
+        }
+    },
+    {
+        "id": 9,
+        "storage": {
+            "capacity": "1TB",
+            "performance": "164MB/s"
+        },
+        "computing": {
+            "cpu_power": "3 cores 1695MHz",
+            "gpu_power": "\u65e0"
+        }
+    },
+    {
+        "id": 10,
+        "storage": {
+            "capacity": "9TB",
+            "performance": "472MB/s"
+        },
+        "computing": {
+            "cpu_power": "4 cores 2644MHz",
+            "gpu_power": "1.23 TFLOPS"
+        }
+    },
+    {
+        "id": 11,
+        "storage": {
+            "capacity": "3TB",
+            "performance": "116MB/s"
+        },
+        "computing": {
+            "cpu_power": "2 cores 1926MHz",
+            "gpu_power": "\u65e0"
+        }
+    },
+    {
+        "id": 12,
+        "storage": {
+            "capacity": "25TB",
+            "performance": "521MB/s"
+        },
+        "computing": {
+            "cpu_power": "15 cores 2612MHz",
+            "gpu_power": "4.59 TFLOPS"
+        }
+    },
+    {
+        "id": 13,
+        "storage": {
+            "capacity": "14TB",
+            "performance": "452MB/s"
+        },
+        "computing": {
+            "cpu_power": "7 cores 2720MHz",
+            "gpu_power": "1.09 TFLOPS"
+        }
+    },
+    {
+        "id": 14,
+        "storage": {
+            "capacity": "1TB",
+            "performance": "215MB/s"
+        },
+        "computing": {
+            "cpu_power": "2 cores 1735MHz",
+            "gpu_power": "\u65e0"
+        }
+    },
+    {
+        "id": 15,
+        "storage": {
+            "capacity": "28TB",
+            "performance": "720MB/s"
+        },
+        "computing": {
+            "cpu_power": "24 cores 2624MHz",
+            "gpu_power": "3.62 TFLOPS"
+        }
+    },
+    {
+        "id": 16,
+        "storage": {
+            "capacity": "12TB",
+            "performance": "410MB/s"
+        },
+        "computing": {
+            "cpu_power": "11 cores 2687MHz",
+            "gpu_power": "0.52 TFLOPS"
+        }
+    },
+    {
+        "id": 17,
+        "storage": {
+            "capacity": "2TB",
+            "performance": "145MB/s"
+        },
+        "computing": {
+            "cpu_power": "2 cores 1606MHz",
+            "gpu_power": "\u65e0"
+        }
+    },
+    {
+        "id": 18,
+        "storage": {
+            "capacity": "39TB",
+            "performance": "656MB/s"
+        },
+        "computing": {
+            "cpu_power": "19 cores 2586MHz",
+            "gpu_power": "\u65e0"
+        }
+    },
+    {
+        "id": 19,
+        "storage": {
+            "capacity": "9TB",
+            "performance": "461MB/s"
+        },
+        "computing": {
+            "cpu_power": "5 cores 2678MHz",
+            "gpu_power": "\u65e0"
+        }
+    }
+]
