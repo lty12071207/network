@@ -22,8 +22,8 @@ def convert_txt_to_json(input_filename, output_filename='output.json'):
                     "weight": random.randint(10, 100),
                     "bw": bw,
                     "delay": delay,
-                    "lost": random.randint(0,20)
-
+                    "lost": random.randint(0,100),
+                    "LinkUtilization":random.randint(0,100)
                 })
 
     # 将转换后的数据保存到JSON文件中

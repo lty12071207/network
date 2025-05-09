@@ -73,8 +73,9 @@ class NetworkPlanner:
             capacity=node["storage"]["capacity"]
             performance=node["storage"]["performance"]
             cost = node["cost"]
+            uti= node["computing"]["gpu_Utilization"]
             # 从配置文件读取节点信息并添加到图中
-            planner.G.add_node(node_id, computing_power=computing_power, id=node_id, cost=cost,gpu_power=gpu_power,capacity=capacity,performance=performance)
+            planner.G.add_node(node_id, computing_power=computing_power, id=node_id, cost=cost,gpu_power=gpu_power,capacity=capacity,performance=performance,uti=uti)
 
         # 添加边
         for edge in configlink:
@@ -83,8 +84,10 @@ class NetworkPlanner:
             propagation_delay = edge["delay"]
             cost = int(edge["weight"])
             bandwith=edge['bw']
+            loss=edge['lost']
+            luti=edge['LinkUtilization']
             # 从配置文件读取边信息并添加到图中
-            planner.G.add_edge(u, v, propagation_delay=propagation_delay, cost=cost,bandwith=bandwith)
+            planner.G.add_edge(u, v, propagation_delay=propagation_delay, cost=cost,bandwith=bandwith,loss=loss,luti=luti)
 
         return planner
 

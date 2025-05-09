@@ -3,8 +3,10 @@ import random
 def generate_node_config():
     nodes = []
     for i in range(20):
+        cost=random.randint(100, 1000)
         node = {
             "id": i,
+            "cost":cost,
             "storage": {},
             "computing": {}
         }
@@ -27,13 +29,16 @@ def generate_node_config():
         # 设置算力需求
         if level == "低":
             node["computing"]["cpu_power"] = f"{random.randint(1, 4)} cores {random.randint(1500, 2250)}MHz"
-            node["computing"]["gpu_power"] = f"{random.uniform(0.25, 0.5):.2f} TFLOPS" if random.random() < 0.5 else "无"
+            node["computing"]["gpu_power"] = random.randint(1, 100) if random.random() < 0.5 else 12138
+            node["computing"]["gpu_Utilization"] = random.randint(0, 100) if random.random() < 0.5 else 12138
         elif level == "中":
             node["computing"]["cpu_power"] = f"{random.randint(4, 12)} cores {random.randint(2000, 2750)}MHz"
-            node["computing"]["gpu_power"] = f"{random.uniform(0.5, 1.5):.2f} TFLOPS" if random.random() < 0.7 else "无"
+            node["computing"]["gpu_power"] = random.randint(101, 500) if random.random() < 0.7 else 12138
+            node["computing"]["gpu_Utilization"] = random.randint(0, 100) if random.random() < 0.7 else 12138
         else:  # 高
             node["computing"]["cpu_power"] = f"{random.randint(12, 24)} cores {random.randint(2500, 3250)}MHz"
-            node["computing"]["gpu_power"] = f"{random.uniform(1.5, 5.0):.2f} TFLOPS" if random.random() < 0.9 else "无"
+            node["computing"]["gpu_power"] = random.randint(501, 1000) if random.random() < 0.9 else 12138
+            node["computing"]["gpu_Utilization"] = random.randint(0, 100) if random.random() < 0.9 else 12138
         nodes.append(node)
     return nodes
 
