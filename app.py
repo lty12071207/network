@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 import json
-
+from utils.intentroute import NetworkPlanner
 from utils.topo_handle import convert_json_to_echarts_topology
 
 app = Flask(__name__, template_folder='templates')
@@ -28,7 +28,7 @@ def generate_topology_data():
 @app.route('/', methods=['GET'])
 def index():
     #topology_data = generate_topology_data()
-    topology_data =convert_json_to_echarts_topology('./api/topo.json','./api/node_config.json')
+
     return render_template('test.html', topology_data=topology_data)
 
 # API 路由，返回拓扑数据（如果需要动态获取）
@@ -41,7 +41,16 @@ def get_topology():
 def handle_post():
     # 获取接收到的 JSON 数据
     data = request.get_json()
-
+    planner = NetworkPlanner.from_config_file('../api/topo.json', '../api/node_config.json')
+    #data解析
+    path, compute_nodes = planner.find_time_optimal_route(
+        src=0,
+        dst=18,
+        required_compute_nodes=4,
+        min_computing_power=10,  # 要求计算节点算力≥800
+        min_bandwidth=10，
+        # 要求链路带宽≥10
+    )
     # 在控制台输出接收到的参数
     print("Received data:")
     print(data)

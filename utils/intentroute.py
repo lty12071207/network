@@ -300,14 +300,10 @@ if __name__ == "__main__":
         src=0,
         dst=18,
         required_compute_nodes=4,
-        min_computing_power=700,  # 要求计算节点算力≥800
+        min_computing_power=10,  # 要求计算节点算力≥800
         min_bandwidth=10  # 要求链路带宽≥10
     )
+    print(path)
+    print(compute_nodes)
 
-    if path:
-        print(f"最优路径: {path}")
-        print(f"使用的计算节点: {compute_nodes}")
-        #print(f"预估总时间: {total_time:.2f} 单位时间")
-        planner.visualize(path=path,selected_nodes=compute_nodes)
-    else:
-        print("未找到符合要求的路径     ")
+

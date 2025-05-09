@@ -1,6 +1,6 @@
 import json
 from collections import defaultdict
-
+import random
 def convert_txt_to_json(input_filename, output_filename='output.json'):
     """
     Converts a text file with link data into a JSON file.
@@ -19,9 +19,11 @@ def convert_txt_to_json(input_filename, output_filename='output.json'):
                     "label": label,
                     "src": src,
                     "dest": dest,
-                    "weight": weight,
+                    "weight": random.randint(10, 100),
                     "bw": bw,
-                    "delay": delay
+                    "delay": delay,
+                    "lost": random.randint(0,20)
+
                 })
 
     # 将转换后的数据保存到JSON文件中

@@ -3,248 +3,279 @@
         "label": "Link_0",
         "src": "0",
         "dest": "15",
-        "weight": "8840",
+        "weight": 64,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 19
     },
     {
         "label": "Link_1",
         "src": "1",
         "dest": "2",
-        "weight": "8840",
+        "weight": 64,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 1
     },
     {
         "label": "Link_2",
         "src": "1",
         "dest": "6",
-        "weight": "8840",
+        "weight": 85,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 10
     },
     {
         "label": "Link_3",
         "src": "1",
         "dest": "15",
-        "weight": "8840",
+        "weight": 11,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 12
     },
     {
         "label": "Link_5",
         "src": "2",
         "dest": "3",
-        "weight": "8840",
+        "weight": 32,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 2
     },
     {
         "label": "Link_6",
         "src": "2",
         "dest": "6",
-        "weight": "8840",
+        "weight": 21,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 6
     },
     {
         "label": "Link_7",
         "src": "2",
         "dest": "8",
-        "weight": "8840",
+        "weight": 46,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 4
     },
     {
         "label": "Link_8",
         "src": "2",
         "dest": "17",
-        "weight": "8840",
+        "weight": 24,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 9
     },
     {
         "label": "Link_9",
         "src": "2",
         "dest": "18",
-        "weight": "8840",
+        "weight": 64,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 11
     },
     {
         "label": "Link_10",
         "src": "2",
         "dest": "19",
-        "weight": "8840",
+        "weight": 56,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 9
     },
     {
         "label": "Link_12",
         "src": "4",
         "dest": "13",
-        "weight": "8840",
+        "weight": 45,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 5
     },
     {
         "label": "Link_13",
         "src": "4",
         "dest": "6",
-        "weight": "8840",
+        "weight": 26,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 19
     },
     {
         "label": "Link_14",
         "src": "4",
         "dest": "15",
-        "weight": "8840",
+        "weight": 32,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 2
     },
     {
         "label": "Link_15",
         "src": "5",
         "dest": "7",
-        "weight": "8840",
+        "weight": 28,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 1
     },
     {
         "label": "Link_16",
         "src": "5",
         "dest": "13",
-        "weight": "8840",
+        "weight": 14,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 15
     },
     {
         "label": "Link_17",
         "src": "5",
         "dest": "6",
-        "weight": "8840",
+        "weight": 49,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 1
     },
     {
         "label": "Link_18",
         "src": "5",
         "dest": "15",
-        "weight": "8840",
+        "weight": 11,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 6
     },
     {
         "label": "Link_23",
         "src": "6",
         "dest": "7",
-        "weight": "8840",
+        "weight": 72,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 18
     },
     {
         "label": "Link_27",
         "src": "8",
         "dest": "11",
-        "weight": "8840",
+        "weight": 50,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 12
     },
     {
         "label": "Link_28",
         "src": "8",
         "dest": "15",
-        "weight": "8840",
+        "weight": 28,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 2
     },
     {
         "label": "Link_29",
         "src": "9",
         "dest": "15",
-        "weight": "8840",
+        "weight": 14,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 10
     },
     {
         "label": "Link_30",
         "src": "10",
         "dest": "11",
-        "weight": "8840",
+        "weight": 73,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 18
     },
     {
         "label": "Link_33",
         "src": "11",
         "dest": "15",
-        "weight": "8840",
+        "weight": 28,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 13
     },
     {
         "label": "Link_34",
         "src": "12",
         "dest": "13",
-        "weight": "8840",
+        "weight": 80,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 12
     },
     {
         "label": "Link_35",
         "src": "12",
         "dest": "15",
-        "weight": "8840",
+        "weight": 51,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 16
     },
     {
         "label": "Link_39",
         "src": "13",
         "dest": "14",
-        "weight": "8840",
+        "weight": 88,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 17
     },
     {
         "label": "Link_40",
         "src": "13",
         "dest": "15",
-        "weight": "8840",
+        "weight": 78,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 16
     },
     {
         "label": "Link_41",
         "src": "13",
         "dest": "16",
-        "weight": "8840",
+        "weight": 22,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 20
     },
     {
         "label": "Link_43",
         "src": "14",
         "dest": "15",
-        "weight": "8840",
+        "weight": 62,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 13
     },
     {
         "label": "Link_54",
         "src": "15",
         "dest": "16",
-        "weight": "8840",
+        "weight": 87,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 13
     },
     {
         "label": "Link_55",
         "src": "15",
         "dest": "17",
-        "weight": "8840",
+        "weight": 15,
         "bw": "50000",
-        "delay": "1"
+        "delay": "1",
+        "lost": 0
     }
 ]
