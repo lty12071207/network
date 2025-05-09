@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 import json
 
 from utils.topo_handle import convert_json_to_echarts_topology
@@ -29,7 +29,6 @@ def generate_topology_data():
 def index():
     #topology_data = generate_topology_data()
     topology_data =convert_json_to_echarts_topology('./api/topo.json','./api/node_config.json')
-    # houduan
     return render_template('test.html', topology_data=topology_data)
 
 # API 路由，返回拓扑数据（如果需要动态获取）
@@ -37,5 +36,18 @@ def index():
 def get_topology():
     return jsonify(generate_topology_data())
 
+
+@app.route('/api/test', methods=['POST'])
+def handle_post():
+    # 获取接收到的 JSON 数据
+    data = request.get_json()
+
+    # 在控制台输出接收到的参数
+    print("Received data:")
+    print(data)
+
+    # 返回响应
+    return jsonify({"message": "Data received successfully", "your_data": data})
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,host="0.0.0.0",port='12138')

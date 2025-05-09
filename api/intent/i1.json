@@ -1,0 +1,24 @@
+{
+  "modality_info":
+    { "modality": "时延敏感分布式存算模态",
+      "method": "2",
+      "status": "success"
+    },
+  "ip_info":
+    { "source_ip": "192.168.5.3",
+      "destination_ip": "192.65.36.25"
+    },
+  "network_qos_constraints":
+    { "bandwidth_requirement": "2.5Gbps",
+      "latency_requirement": "5ms",
+      "loss_requirement": "0.50%"
+    },
+  "computational_constraints":
+    { "cpu_power": "80 cores 10GHz",
+      "gpu_power": "10 TFLOPS"
+    },
+  "storage_constraints":
+  {"storage_capacity": "50TB",
+    "storage_performance": "2.5GB/s"
+  }
+}
