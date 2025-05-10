@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!-- 声明 HTML 文档，lang 属性指定文档语言为中文 -->
+<html lang="zh-CN">
+<head>
+    <!-- 设置文档字符编码为 UTF-8 -->
+    <meta charset="utf-8">
+    <!-- 设置页面标题 -->
+    <title>多模态意图驱动智能路由</title>
+    <!-- 引入 ECharts 库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.2/echarts.min.js"></script>
+    <!-- 定义页面样式 -->
+    <style>
+        /* 设置网络拓扑图容器的样式 */
+        #network {
+            width: 1200px;
+            height: 800px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- 创建网络拓扑图容器 -->
+    <div id="network"></div>
+
+    <script>
+        // 获取后端传递的拓扑数据，这里使用模板语法注入数据
+        const topologyData = {{ topology_data | tojson | safe }};
+        // 为每个节点生成固定初始位置（圆形布局）
+        const centerX = 600;  // 画布中心X坐标
+        const centerY = 400;  // 画布中心Y坐标
+        const radius = 300;   // 布局半径
+        // 遍历拓扑数据中的节点，为每个节点计算初始位置
+        topologyData.nodes.forEach((node, index) => {
+            const totalNodes = topologyData.nodes.length;
+            // 计算每个节点的角度，-90度起始，使第一个节点位于顶部
+            const angle = (index * 2 * Math.PI) / totalNodes - Math.PI / 2;
+            // 计算节点的 X 坐标
+            node.x = centerX + radius * Math.cos(angle);
+            // 计算节点的 Y 坐标
+            node.y = centerY + radius * Math.sin(angle);
+            node.location = 'fixed';
+            //node.fixed = true;
+        });
+
+
+
+        // 初始化 ECharts 实例，绑定到 network 容器
+        const chart = echarts.init(document.getElementById('network'));
+        /**
+         * 定义提示框格式化函数
+         * @param {Object} params - ECharts 传递的参数对象
+         * @returns {string} - 格式化后的提示框内容
+         */
+        function tooltipFormatter(params) {
+            if (params.dataType === 'edge') {
+                const { source, target, path_id, path_name, strategy,lineStyle } = params.data;
+                return `
+                    <div style="text-align: left;">
+                        <div>路径ID: ${path_id}</div>
+                        <div>策略: <span style="color:${params.data.lineStyle.color}">■</span> ${strategy}</div>
+                        <div>名称: ${path_name}</div>
+                        <hr/>
+                        <div>带宽: ${params.data.bw}</div>
+                        <div>时延: ${params.data.delay}</div>
+                    </div>
+                `;
+            } else if (params.dataType === 'node') {
+                const {name, path_ids = []} = params.data;
+                const pathInfo = topologyData.path_config.strategies;
+                return `
+                    <div style="text-align: left;">
+                        <div>节点: ${name}</div>
+                        <div>经过的路径:
+                            ${path_ids.map(id => `
+                                <div><span style="color:${pathInfo[id]}">■</span> ${id}</div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+
+        // 配置 ECharts 选项
+        const option = {
+            title: { text: '多模态意图驱动智能路由', left: 'center' },
+            tooltip: {
+                trigger: 'item',
+                formatter: tooltipFormatter
+            },
+            series: [{
+                type: 'graph',
+                layout: 'force',
+                //layout: 'none',
+                draggable: true,
+                roam: true,
+                layoutAnimation: false,
+                edgeSymbol: ['none', 'none'],
+                edgeSymbolSize: 12,
+                label: {
+                    show: true,
+                    position: 'bottom',
+                    fontSize: 14,
+                    color: '#333',
+                    formatter: '{b}'
+                },
+                lineStyle: {
+                    color: '#99a9bf',
+                    width: 2,
+                    curveness: 0,
+                    type: (params) => params.data.lineStyle?.color ? 'solid' : 'dashed' // 区分原始边
+                },
+                edgeLabel: {
+                    show: true,
+                    formatter: (params) => params.data.path_name || '',
+                    color: (params) => params.data.lineStyle?.color || '#999'
+                },
+                force: {
+                    repulsion: 5000,
+                    gravity: 0,
+                    edgeLength: 300,
+                    iteration: 0,
+                    initialEnergy: 0 // 设置初始能量以确保初始布局一致
+                },
+                data: topologyData.nodes,
+                links: topologyData.links,
+                emphasis: {
+                    scale: true,
+                    focus: 'adjacency',
+                    label: { show: true, fontWeight: 'bold' },
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowColor: 'rgba(0, 0, 0, 0.3)'
+                    }
+                }
+            }]
+        };
+
+        // 应用配置并渲染图表
+        chart.setOption(option);
+
+        // 窗口大小变化时自适应调整图表
+        window.addEventListener('resize', () => chart.resize());
+    </script>
+</body>
+</html>

@@ -73,7 +73,7 @@
         },
         "computing": {
             "cpu_power": "16 cores 2785MHz",
-            "gpu_power": 766,
+            "gpu_power": 751.0,
             "gpu_Utilization": 7
         }
     },
@@ -190,7 +190,7 @@
         },
         "computing": {
             "cpu_power": "15 cores 3137MHz",
-            "gpu_power": 886,
+            "gpu_power": 871.0,
             "gpu_Utilization": 20
         }
     },

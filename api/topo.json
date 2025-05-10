@@ -4,7 +4,7 @@
         "src": "0",
         "dest": "15",
         "weight": 31,
-        "bw": 7994,
+        "bw": 5494.0,
         "delay": 0.41,
         "lost": 72,
         "LinkUtilization": 100
@@ -14,7 +14,7 @@
         "src": "1",
         "dest": "2",
         "weight": 85,
-        "bw": 5290,
+        "bw": 2290.0,
         "delay": 2.04,
         "lost": 48,
         "LinkUtilization": 1
@@ -24,7 +24,7 @@
         "src": "1",
         "dest": "6",
         "weight": 43,
-        "bw": 6698,
+        "bw": 3698.0,
         "delay": 1.17,
         "lost": 14,
         "LinkUtilization": 86
@@ -44,7 +44,7 @@
         "src": "2",
         "dest": "3",
         "weight": 24,
-        "bw": 6634,
+        "bw": 6134.0,
         "delay": 1.31,
         "lost": 31,
         "LinkUtilization": 52
@@ -94,7 +94,7 @@
         "src": "2",
         "dest": "19",
         "weight": 72,
-        "bw": 5789,
+        "bw": 3289.0,
         "delay": 1.17,
         "lost": 16,
         "LinkUtilization": 53
@@ -134,7 +134,7 @@
         "src": "5",
         "dest": "7",
         "weight": 87,
-        "bw": 8943,
+        "bw": 6443.0,
         "delay": 1.0,
         "lost": 93,
         "LinkUtilization": 8
@@ -144,7 +144,7 @@
         "src": "5",
         "dest": "13",
         "weight": 55,
-        "bw": 5098,
+        "bw": 2098.0,
         "delay": 2.42,
         "lost": 18,
         "LinkUtilization": 10
@@ -154,7 +154,7 @@
         "src": "5",
         "dest": "6",
         "weight": 12,
-        "bw": 7117,
+        "bw": 6617.0,
         "delay": 1.91,
         "lost": 1,
         "LinkUtilization": 42
@@ -174,7 +174,7 @@
         "src": "6",
         "dest": "7",
         "weight": 48,
-        "bw": 8687,
+        "bw": 6187.0,
         "delay": 2.11,
         "lost": 92,
         "LinkUtilization": 48
@@ -204,7 +204,7 @@
         "src": "9",
         "dest": "15",
         "weight": 31,
-        "bw": 8253,
+        "bw": 7753.0,
         "delay": 2.84,
         "lost": 27,
         "LinkUtilization": 74
@@ -254,7 +254,7 @@
         "src": "13",
         "dest": "14",
         "weight": 95,
-        "bw": 8964,
+        "bw": 5964.0,
         "delay": 0.91,
         "lost": 20,
         "LinkUtilization": 76
@@ -284,7 +284,7 @@
         "src": "14",
         "dest": "15",
         "weight": 92,
-        "bw": 7306,
+        "bw": 4306.0,
         "delay": 0.06,
         "lost": 0,
         "LinkUtilization": 49

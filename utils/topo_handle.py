@@ -107,6 +107,7 @@ def convert_json_to_echarts_topology(input_json_file,config):
                 i['storage']['performance'] = j['storage']['performance']
                 i['computing']['cpu_power']= j['computing']['cpu_power']
                 i['computing']['gpu_power'] = j['computing']['gpu_power']
+                i['computing']['gpu_Utilization'] = str(j['computing']['gpu_Utilization'])+'%'
 
     topology_data = {
         "nodes": nodes,
@@ -152,10 +153,164 @@ def get_image_url(node_name, node_degree):
         return image_url_map["default"]
 
 
-# 使用示例：
-# topology_data = convert_json_to_echarts_topology('output.json')
-# print(json.dumps(topology_data, indent=4, ensure_ascii=False))
+def drawroute(input_json_file, config, path_results):
+    """
+    扩展后的函数，支持路径计算结果注入
 
+    Args:
+        path_results: 路径计算结果，格式示例：
+            [
+                {
+                    "id": "P001",
+                    "rname": "带宽优先",
+                    "rname": "BandwidthPriority",
+                    "e": ["0", "15", "12"],
+                    "cn": [("0", "15"), ("15", "12")]
+                },
+                # 其他路径...
+            ]
+    """
+    strategy_color_map = {
+        1: "#FF0000",  # 红
+        2: "#FFFF00",  # 黄
+        3: "#0000FF",  # 蓝
+        4: "#00FF00"   # 绿
+    }
+
+    with open(input_json_file, 'r') as f:
+        data = json.load(f)
+    with open(config, 'r') as f:
+        node_configs = json.load(f)
+
+    # 基础拓扑构建（原逻辑）
+    degree_counter = defaultdict(int)
+    for item in data:
+        degree_counter[item["src"]] += 1
+        degree_counter[item["dest"]] += 1
+
+    nodes, links = [], []
+    # 添加基础节点和边（略，与用户原代码相同）
+    node_names = set()  # 用于记录已经添加过的节点名称
+
+    for item in data:
+        label = item.get("label")
+        src = item.get("src")
+        dest = item.get("dest")
+        bw = item.get('bw')
+        weight = item.get('weight')
+        delay = item.get('delay')
+        LinkUtilization = item.get('LinkUtilization')
+
+        # 添加源节点（带度数判断）
+        if src not in node_names:
+            node_degree = degree_counter[src]
+            nodes.append({
+                "name": src,
+                "value": [80, 80],
+                "symbol": get_image_url(src, node_degree),
+                "symbolSize": [80, 80],
+                "degree": node_degree  # 可选：存储度数用于调试
+            })
+            node_names.add(src)
+
+        # 添加目标节点（带度数判断）
+        if dest not in node_names:
+            node_degree = degree_counter[dest]
+            nodes.append({
+                "name": dest,
+                "value": [80, 80],
+                "symbol": get_image_url(src, node_degree),
+                "symbolSize": [80, 80],
+                "degree": node_degree  # 可选：存储度数用于调试
+            })
+            node_names.add(dest)
+
+        # 添加链接
+        links.append(
+            {"source": src,
+             "target": dest,
+             "bw": str(bw) + 'Mbps',
+             "weight": weight,
+             "delay": str(delay) + 'ms',
+             'utl': str(LinkUtilization) + '%',
+             "path_id": None,
+             "path_name": None,
+             "strategy": None,  # 传递策略类型
+             "lineStyle": {"color": "#000000"},  # 根据策略设置颜色
+             "label": {"show": True, "formatter": None}
+             })
+
+    # 构造拓扑数据
+    with open(config, 'r') as f:
+        data2 = json.load(f)
+    for i in nodes:
+        for j in data2:
+            if str(i['name']) == str(j['id']):
+                i['storage'] = {}
+                i['computing'] = {}
+                i['storage']['capacity'] = j['storage']['capacity']
+                i['storage']['performance'] = j['storage']['performance']
+                i['computing']['cpu_power'] = j['computing']['cpu_power']
+                i['computing']['gpu_power'] = j['computing']['gpu_power']
+                i['computing']['gpu_Utilization'] = str(j['computing']['gpu_Utilization']) + '%'
+
+    # ---- 新增：处理路径计算结果 ----
+    # 统计节点被多少路径经过
+    node_path_counts = defaultdict(int)
+    path_edges = []
+
+    for path in path_results:
+        strategy = path.get("rname")
+        # 根据策略类型获取颜色，默认灰色（#CCCCCC）
+        color = strategy_color_map.get(int(strategy))
+
+        # 记录节点被路径经过的次数
+        for node in path["cn"]:
+            node_path_counts[node] += 1
+
+        # 生成路径边（独立边）
+        for src, target in path["e"]:
+            print(src,target)
+            # 查找原始边属性
+            original_edge = next(
+                (e for e in data if e["src"] == src and e["dest"] == target),
+                {"bw": "N/A", "delay": "N/A"}
+            )
+            path_edges.append({
+                "source": str(src),
+                "target": str(target),
+                "bw": original_edge.get("bw", "N/A"),
+                "delay": original_edge.get("delay", "N/A"),
+                "utl": original_edge.get("LinkUtilization", "N/A"),
+                "path_id": path["id"],
+                "path_name": path["mname"],
+                "strategy": strategy,  # 传递策略类型
+                "lineStyle": {"color": color},  # 根据策略设置颜色
+                "label": {"show": True, "formatter": path["mname"]}
+            })
+
+    # 更新节点大小（根据路径经过次数）
+    for node in nodes:
+        count = node_path_counts.get(node["name"], 0)
+        node["symbolSize"] = [80 * (1 + 0.2 * count)] * 2  # 放大系数
+
+
+    # links.append(path_edges[0])
+    # for i in links:
+    #     print(i)
+    # # 合并数据并返回
+    topology_data = {
+        "nodes": nodes,
+        "links": links+path_edges,
+        "path_config": {
+            # 生成策略类型到颜色的映射表（去重）
+            "strategies": {
+                s: strategy_color_map.get(s, "#CCCCCC")
+                for s in {p["rname"] for p in path_results}
+            }
+        }
+    }
+    return topology_data
 
 
 

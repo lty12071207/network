@@ -1,5 +1,6 @@
 import json
 
+from network.utils.topo_handle import convert_json_to_echarts_topology
 from utils.intent_handel import load_json_file, extract_numbers
 from utils.intentroute import NetworkPlanner
 import time
@@ -60,11 +61,31 @@ print(data['e'])
 # 如果当前 data 的 'e' 不在 existing_es 中，则添加到 existing_data
 if data['e'] not in existing_es:
     existing_data.append(data)
-
+    topo=load_json_file('./api/topo.json')
+    for i in topo:
+        sd=set()
+        sd.add(int(i['src']))
+        sd.add(int(i['dest']))
+        for j in data['e']:
+            print(type(j))
+            if j[0] in sd and j[1] in sd:
+                i['bw']-=min_bandwidth
+    with open('./api/topo.json', 'w', encoding='utf-8') as file:
+        json.dump(topo, file, ensure_ascii=False, indent=4)
+    node = load_json_file('./api/node_config.json')
+    for i in node:
+        for j in data['cn']:
+            if i['id']==j :
+                i['computing']['gpu_power']-=min_computing_power
+    with open('./api/node_config.json', 'w', encoding='utf-8') as file:
+        json.dump(node, file, ensure_ascii=False, indent=4)
     # 将更新后的数据写回文件
     with open(file_name, 'w', encoding='utf-8') as file:
         json.dump(existing_data, file, ensure_ascii=False, indent=4)
+
 else:
     print("该路径的边集合已经存在于文件中，未添加重复项。")
+frontend=convert_json_to_echarts_topology('./api/topo.json', './api/node_config.json')
+print(frontend)
 
 planner.visualize(path, compute_nodes)

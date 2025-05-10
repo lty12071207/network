@@ -1,7 +1,9 @@
 from flask import Flask, render_template, jsonify, request
 import json
+
+from network.utils.intent_handel import load_json_file
 from utils.intentroute import NetworkPlanner
-from utils.topo_handle import convert_json_to_echarts_topology
+from utils.topo_handle import convert_json_to_echarts_topology, drawroute
 
 app = Flask(__name__, template_folder='templates')
 
@@ -25,13 +27,24 @@ def generate_topology_data():
     return {"nodes": nodes, "links": links}
 
 # 主路由，渲染 HTML 模板
-@app.route('/', methods=['GET'])
+@app.route('/t', methods=['GET'])
 def index():
     #topology_data = generate_topology_data()
     #return render_template('test.html')
     topology_data = convert_json_to_echarts_topology('./api/topo.json', './api/node_config.json')
 
     return render_template('test.html', topology_data=topology_data)
+
+
+
+
+@app.route('/', methods=['GET'])
+def final():
+    route=load_json_file('./api/route.json')
+    #route = load_json_file('./api/testroute.json')
+    topology_data = drawroute('./api/topo.json', './api/node_config.json',route)
+
+    return render_template('testshowroute.html', topology_data=topology_data)
 
 # API 路由，返回拓扑数据（如果需要动态获取）
 @app.route('/api/topology', methods=['GET'])
