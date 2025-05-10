@@ -291,9 +291,8 @@ def drawroute(input_json_file, config, path_results):
 
     # 更新节点大小（根据路径经过次数）
     for node in nodes:
-        count = node_path_counts.get(node["name"], 0)
+        count = node_path_counts.get(int(node["name"]), 0)
         node["symbolSize"] = [80 * (1 + 0.2 * count)] * 2  # 放大系数
-
 
     # links.append(path_edges[0])
     # for i in links:

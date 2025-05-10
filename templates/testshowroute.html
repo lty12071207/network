@@ -42,6 +42,28 @@
             //node.fixed = true;
         });
 
+<!--        const edgeGroups = new Map();-->
+<!--        topologyData.links.forEach(link => {-->
+<!--        // 创建不考虑方向的分组键-->
+<!--            const key = [link.source, link.target].sort().join('-');-->
+<!--            if (!edgeGroups.has(key)) {-->
+<!--                edgeGroups.set(key, []);-->
+<!--            }-->
+<!--            edgeGroups.get(key).push(link);-->
+<!--        });-->
+
+<!--        // 为每组边设置不同的曲率-->
+<!--        edgeGroups.forEach(group => {-->
+<!--            if (group.length > 1) {-->
+<!--                group.forEach((link, index) => {-->
+<!--                    const curvature = (index % 2 === 0 ? 0.3 : -0.3) * (Math.ceil(index / 2) + 1);-->
+<!--                    link.lineStyle = link.lineStyle || {};-->
+<!--                    link.lineStyle.curveness = curvature;-->
+<!--                });-->
+<!--            }-->
+<!--        });-->
+
+
 
 
         // 初始化 ECharts 实例，绑定到 network 容器
@@ -65,11 +87,16 @@
                     </div>
                 `;
             } else if (params.dataType === 'node') {
-                const {name, path_ids = []} = params.data;
+                const {name, storage, computing,path_ids = []} = params.data;
                 const pathInfo = topologyData.path_config.strategies;
                 return `
                     <div style="text-align: left;">
                         <div>节点: ${name}</div>
+                        <div>存储容量: ${storage.capacity}</div>
+                        <div>存储性能: ${storage.performance}</div>
+                        <div>CPU算力: ${computing.cpu_power}</div>
+                        <div>GPU算力: ${computing.gpu_power} TFLOPS</div>
+                        <div>节点算力利用率: ${computing.gpu_Utilization}</div>
                         <div>经过的路径:
                             ${path_ids.map(id => `
                                 <div><span style="color:${pathInfo[id]}">■</span> ${id}</div>
@@ -115,6 +142,19 @@
                     formatter: (params) => params.data.path_name || '',
                     color: (params) => params.data.lineStyle?.color || '#999'
                 },
+<!--                lineStyle: {-->
+<!--                    color: (params) => params.data.lineStyle?.color || '#99a9bf',-->
+<!--                    width: 4, // 加粗线条宽度-->
+<!--                    curveness: (params) => params.data.lineStyle?.curveness || 0, // 动态曲率-->
+<!--                    type: (params) => params.data.lineStyle?.color ? 'solid' : 'dashed'-->
+<!--                },-->
+<!--                edgeLabel: {-->
+<!--                    show: true,-->
+<!--                    formatter: (params) => params.data.path_name || '',-->
+<!--                    color: (params) => params.data.lineStyle?.color || '#999',-->
+<!--                    fontSize: 12, // 增大路径名称字号-->
+<!--                    backgroundColor: 'rgba(255,255,255,0.9)' // 添加文字背景-->
+<!--                },-->
                 force: {
                     repulsion: 5000,
                     gravity: 0,
