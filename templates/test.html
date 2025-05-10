@@ -51,13 +51,14 @@
             // 如果是边的数据类型
             if (params.dataType === 'edge') {
                 // 从边的数据中解构出源节点、目标节点、带宽、权重和时延
-                const { source, target, bw, weight, delay } = params.data;
+                const { source, target, bw, weight, delay,utl } = params.data;
                 // 返回格式化后的边提示框内容
                 return `
                     <div style="text-align: center;">
                         <div>带宽: ${bw}</div>
                         <div>权重: ${weight}</div>
                         <div>时延: ${delay}</div>
+                        <div>链路利用率: ${utl}</div>
                     </div>
                 `;
             } else if (params.dataType === 'node') {

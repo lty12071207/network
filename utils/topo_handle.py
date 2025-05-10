@@ -21,7 +21,7 @@ def convert_txt_to_json(input_filename, output_filename='output.json'):
                     "dest": dest,
                     "weight": random.randint(10, 100),
                     "bw": random.randint(10, 100),
-                    "delay": random.random()*3,
+                    "delay": round(random.random()*3,2),
                     "lost": random.randint(0,100),
                     "LinkUtilization":random.randint(0,100)
                 })
@@ -66,6 +66,7 @@ def convert_json_to_echarts_topology(input_json_file,config):
         bw=item.get('bw')
         weight = item.get('weight')
         delay=item.get('delay')
+        LinkUtilization=item.get('LinkUtilization')
 
         # 添加源节点（带度数判断）
         if src not in node_names:
@@ -92,13 +93,12 @@ def convert_json_to_echarts_topology(input_json_file,config):
             node_names.add(dest)
 
         # 添加链接
-        links.append({"source": src, "target": dest,"bw":bw+'Mbps', "weight":weight, "delay":delay+'ms'})
+        links.append({"source": src, "target": dest,"bw":str(bw)+'Mbps', "weight":weight, "delay":str(delay)+'ms','utl':str(LinkUtilization)+'%'})
 
     # 构造拓扑数据
     with open(config, 'r') as f:
         data2 = json.load(f)
     for i in nodes:
-        print(i)
         for j in data2:
             if str(i['name'])==str(j['id']):
                 i['storage']={}
@@ -107,7 +107,6 @@ def convert_json_to_echarts_topology(input_json_file,config):
                 i['storage']['performance'] = j['storage']['performance']
                 i['computing']['cpu_power']= j['computing']['cpu_power']
                 i['computing']['gpu_power'] = j['computing']['gpu_power']
-                print(1)
 
     topology_data = {
         "nodes": nodes,

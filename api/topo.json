@@ -3,310 +3,310 @@
         "label": "Link_0",
         "src": "0",
         "dest": "15",
-        "weight": 80,
-        "bw": 16,
-        "delay": 1.660619342047408,
-        "lost": 83,
-        "LinkUtilization": 59
+        "weight": 20,
+        "bw": 51,
+        "delay": 2.12,
+        "lost": 96,
+        "LinkUtilization": 62
     },
     {
         "label": "Link_1",
         "src": "1",
         "dest": "2",
-        "weight": 63,
-        "bw": 17,
-        "delay": 1.602520607566949,
-        "lost": 76,
-        "LinkUtilization": 85
+        "weight": 71,
+        "bw": 55,
+        "delay": 2.87,
+        "lost": 49,
+        "LinkUtilization": 36
     },
     {
         "label": "Link_2",
         "src": "1",
         "dest": "6",
-        "weight": 20,
-        "bw": 79,
-        "delay": 1.517607398739709,
-        "lost": 85,
-        "LinkUtilization": 4
+        "weight": 24,
+        "bw": 49,
+        "delay": 2.19,
+        "lost": 25,
+        "LinkUtilization": 41
     },
     {
         "label": "Link_3",
         "src": "1",
         "dest": "15",
-        "weight": 28,
-        "bw": 69,
-        "delay": 0.9523401488583536,
-        "lost": 60,
-        "LinkUtilization": 56
+        "weight": 11,
+        "bw": 76,
+        "delay": 0.78,
+        "lost": 99,
+        "LinkUtilization": 78
     },
     {
         "label": "Link_5",
         "src": "2",
         "dest": "3",
-        "weight": 76,
-        "bw": 24,
-        "delay": 1.8289113967904018,
-        "lost": 52,
-        "LinkUtilization": 1
+        "weight": 52,
+        "bw": 13,
+        "delay": 1.74,
+        "lost": 89,
+        "LinkUtilization": 74
     },
     {
         "label": "Link_6",
         "src": "2",
         "dest": "6",
-        "weight": 84,
-        "bw": 55,
-        "delay": 2.556508898361159,
-        "lost": 45,
-        "LinkUtilization": 92
+        "weight": 12,
+        "bw": 50,
+        "delay": 0.82,
+        "lost": 25,
+        "LinkUtilization": 34
     },
     {
         "label": "Link_7",
         "src": "2",
         "dest": "8",
-        "weight": 36,
-        "bw": 49,
-        "delay": 1.356744598922599,
-        "lost": 11,
-        "LinkUtilization": 29
+        "weight": 70,
+        "bw": 83,
+        "delay": 1.91,
+        "lost": 17,
+        "LinkUtilization": 80
     },
     {
         "label": "Link_8",
         "src": "2",
         "dest": "17",
-        "weight": 45,
-        "bw": 80,
-        "delay": 2.7725949864945645,
-        "lost": 50,
-        "LinkUtilization": 20
+        "weight": 37,
+        "bw": 70,
+        "delay": 1.32,
+        "lost": 82,
+        "LinkUtilization": 34
     },
     {
         "label": "Link_9",
         "src": "2",
         "dest": "18",
-        "weight": 92,
-        "bw": 51,
-        "delay": 2.00966287819638,
-        "lost": 32,
-        "LinkUtilization": 86
+        "weight": 71,
+        "bw": 100,
+        "delay": 2.89,
+        "lost": 18,
+        "LinkUtilization": 32
     },
     {
         "label": "Link_10",
         "src": "2",
         "dest": "19",
-        "weight": 91,
-        "bw": 58,
-        "delay": 1.5361645400200854,
-        "lost": 60,
-        "LinkUtilization": 75
+        "weight": 100,
+        "bw": 57,
+        "delay": 0.3,
+        "lost": 96,
+        "LinkUtilization": 19
     },
     {
         "label": "Link_12",
         "src": "4",
         "dest": "13",
-        "weight": 58,
-        "bw": 90,
-        "delay": 0.3827137820997363,
-        "lost": 85,
-        "LinkUtilization": 68
+        "weight": 55,
+        "bw": 67,
+        "delay": 2.32,
+        "lost": 65,
+        "LinkUtilization": 24
     },
     {
         "label": "Link_13",
         "src": "4",
         "dest": "6",
-        "weight": 86,
-        "bw": 24,
-        "delay": 2.832495202234269,
-        "lost": 25,
-        "LinkUtilization": 47
+        "weight": 75,
+        "bw": 16,
+        "delay": 1.38,
+        "lost": 35,
+        "LinkUtilization": 4
     },
     {
         "label": "Link_14",
         "src": "4",
         "dest": "15",
-        "weight": 16,
-        "bw": 19,
-        "delay": 0.27676869736631937,
-        "lost": 47,
-        "LinkUtilization": 44
+        "weight": 95,
+        "bw": 69,
+        "delay": 1.26,
+        "lost": 86,
+        "LinkUtilization": 70
     },
     {
         "label": "Link_15",
         "src": "5",
         "dest": "7",
-        "weight": 31,
-        "bw": 49,
-        "delay": 2.294171652297037,
-        "lost": 63,
-        "LinkUtilization": 84
+        "weight": 84,
+        "bw": 57,
+        "delay": 1.65,
+        "lost": 4,
+        "LinkUtilization": 89
     },
     {
         "label": "Link_16",
         "src": "5",
         "dest": "13",
-        "weight": 17,
-        "bw": 10,
-        "delay": 0.30801272441235683,
-        "lost": 12,
-        "LinkUtilization": 33
+        "weight": 21,
+        "bw": 71,
+        "delay": 0.5,
+        "lost": 86,
+        "LinkUtilization": 31
     },
     {
         "label": "Link_17",
         "src": "5",
         "dest": "6",
-        "weight": 66,
-        "bw": 55,
-        "delay": 1.5933438084366065,
-        "lost": 11,
-        "LinkUtilization": 52
+        "weight": 53,
+        "bw": 40,
+        "delay": 1.48,
+        "lost": 55,
+        "LinkUtilization": 15
     },
     {
         "label": "Link_18",
         "src": "5",
         "dest": "15",
-        "weight": 75,
-        "bw": 45,
-        "delay": 0.26638439120273794,
-        "lost": 19,
-        "LinkUtilization": 46
+        "weight": 65,
+        "bw": 53,
+        "delay": 0.9,
+        "lost": 23,
+        "LinkUtilization": 5
     },
     {
         "label": "Link_23",
         "src": "6",
         "dest": "7",
-        "weight": 58,
-        "bw": 65,
-        "delay": 0.633718800544483,
-        "lost": 99,
-        "LinkUtilization": 84
+        "weight": 16,
+        "bw": 84,
+        "delay": 0.88,
+        "lost": 10,
+        "LinkUtilization": 88
     },
     {
         "label": "Link_27",
         "src": "8",
         "dest": "11",
-        "weight": 19,
-        "bw": 33,
-        "delay": 1.0781326034260656,
-        "lost": 39,
-        "LinkUtilization": 33
+        "weight": 35,
+        "bw": 90,
+        "delay": 2.76,
+        "lost": 34,
+        "LinkUtilization": 79
     },
     {
         "label": "Link_28",
         "src": "8",
         "dest": "15",
-        "weight": 65,
-        "bw": 14,
-        "delay": 1.3516100106271387,
-        "lost": 15,
+        "weight": 38,
+        "bw": 69,
+        "delay": 0.44,
+        "lost": 78,
         "LinkUtilization": 72
     },
     {
         "label": "Link_29",
         "src": "9",
         "dest": "15",
-        "weight": 46,
-        "bw": 37,
-        "delay": 0.27442136504143344,
-        "lost": 4,
-        "LinkUtilization": 47
+        "weight": 32,
+        "bw": 55,
+        "delay": 1.24,
+        "lost": 50,
+        "LinkUtilization": 0
     },
     {
         "label": "Link_30",
         "src": "10",
         "dest": "11",
-        "weight": 63,
-        "bw": 48,
-        "delay": 0.7186182573127564,
-        "lost": 92,
-        "LinkUtilization": 9
+        "weight": 50,
+        "bw": 14,
+        "delay": 0.34,
+        "lost": 90,
+        "LinkUtilization": 67
     },
     {
         "label": "Link_33",
         "src": "11",
         "dest": "15",
-        "weight": 73,
-        "bw": 48,
-        "delay": 1.4974086353073406,
+        "weight": 22,
+        "bw": 14,
+        "delay": 1.9,
         "lost": 71,
-        "LinkUtilization": 92
+        "LinkUtilization": 12
     },
     {
         "label": "Link_34",
         "src": "12",
         "dest": "13",
-        "weight": 48,
-        "bw": 34,
-        "delay": 2.812885849677816,
-        "lost": 1,
-        "LinkUtilization": 22
+        "weight": 43,
+        "bw": 40,
+        "delay": 1.52,
+        "lost": 63,
+        "LinkUtilization": 78
     },
     {
         "label": "Link_35",
         "src": "12",
         "dest": "15",
-        "weight": 91,
-        "bw": 29,
-        "delay": 1.7262970234602704,
-        "lost": 54,
-        "LinkUtilization": 14
+        "weight": 73,
+        "bw": 85,
+        "delay": 1.26,
+        "lost": 59,
+        "LinkUtilization": 15
     },
     {
         "label": "Link_39",
         "src": "13",
         "dest": "14",
-        "weight": 51,
-        "bw": 29,
-        "delay": 0.5871455606057271,
-        "lost": 53,
-        "LinkUtilization": 30
+        "weight": 83,
+        "bw": 95,
+        "delay": 0.03,
+        "lost": 34,
+        "LinkUtilization": 27
     },
     {
         "label": "Link_40",
         "src": "13",
         "dest": "15",
-        "weight": 55,
-        "bw": 18,
-        "delay": 1.7407599219303178,
-        "lost": 51,
-        "LinkUtilization": 34
+        "weight": 92,
+        "bw": 78,
+        "delay": 2.92,
+        "lost": 31,
+        "LinkUtilization": 82
     },
     {
         "label": "Link_41",
         "src": "13",
         "dest": "16",
-        "weight": 68,
-        "bw": 63,
-        "delay": 1.5385282243584713,
-        "lost": 65,
-        "LinkUtilization": 7
+        "weight": 97,
+        "bw": 68,
+        "delay": 1.15,
+        "lost": 43,
+        "LinkUtilization": 65
     },
     {
         "label": "Link_43",
         "src": "14",
         "dest": "15",
-        "weight": 95,
-        "bw": 13,
-        "delay": 2.893469370441051,
-        "lost": 50,
-        "LinkUtilization": 23
+        "weight": 69,
+        "bw": 36,
+        "delay": 2.21,
+        "lost": 0,
+        "LinkUtilization": 91
     },
     {
         "label": "Link_54",
         "src": "15",
         "dest": "16",
-        "weight": 94,
-        "bw": 78,
-        "delay": 1.9366670466295148,
-        "lost": 57,
-        "LinkUtilization": 69
+        "weight": 34,
+        "bw": 56,
+        "delay": 0.56,
+        "lost": 84,
+        "LinkUtilization": 17
     },
     {
         "label": "Link_55",
         "src": "15",
         "dest": "17",
-        "weight": 17,
-        "bw": 11,
-        "delay": 2.326729958123745,
-        "lost": 72,
-        "LinkUtilization": 92
+        "weight": 77,
+        "bw": 34,
+        "delay": 1.22,
+        "lost": 45,
+        "LinkUtilization": 84
     }
 ]

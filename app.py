@@ -28,6 +28,8 @@ def generate_topology_data():
 @app.route('/', methods=['GET'])
 def index():
     #topology_data = generate_topology_data()
+    #return render_template('test.html')
+    topology_data = convert_json_to_echarts_topology('./api/topo.json', './api/node_config.json')
 
     return render_template('test.html', topology_data=topology_data)
 
@@ -41,6 +43,7 @@ def get_topology():
 def handle_post():
     # 获取接收到的 JSON 数据
     data = request.get_json()
+
     planner = NetworkPlanner.from_config_file('../api/topo.json', '../api/node_config.json')
     #data解析
     path, compute_nodes = planner.find_time_optimal_route(

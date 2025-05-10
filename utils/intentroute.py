@@ -298,15 +298,18 @@ class NetworkPlanner:
 # 示例用法
 if __name__ == "__main__":
     # 从配置文件中读取网络信息
+
     planner = NetworkPlanner.from_config_file('../api/topo.json','../api/node_config.json')
+    print(planner.find_time_optimal_route)
     path, compute_nodes= planner.find_time_optimal_route(
         src=0,
         dst=18,
-        required_compute_nodes=4,
-        min_computing_power=10,  # 要求计算节点算力≥800
+        required_compute_nodes=5,
+        min_computing_power=80,  # 要求计算节点算力≥800
         min_bandwidth=10  # 要求链路带宽≥10
     )
     print(path)
     print(compute_nodes)
+    planner.visualize(path,compute_nodes)
 
 
