@@ -3,21 +3,29 @@ import json
 from utils.intent_handel import load_json_file, extract_numbers
 from utils.intentroute import NetworkPlanner
 import time
+
 current_timestamp = int(time.time())
-data=load_json_file('./api/intent/i3.json')
-map=load_json_file('./api/address_function.json')
-planner = NetworkPlanner.from_config_file('./api/topo.json','./api/node_config.json')
-src=data['ip_info']['source_ip']
-dest=data['ip_info']['destination_ip']
-sid=map[src]
-did=map[dest]
-mtype=data['modality_info']['modality']
-method=data['modality_info']['method']
-gpu=data['computational_constraints']['gpu_power']
-min_computing_power=extract_numbers(gpu)[0]
-bw=data['network_qos_constraints']['bandwidth_requirement']
-min_bandwidth=extract_numbers(bw)[0]
-path, compute_nodes = planner.find_time_optimal_route(src=sid,dst=did,required_compute_nodes=2,min_computing_power=min_computing_power,min_bandwidth=min_bandwidth)
+data = load_json_file('./api/intent/i2.json')
+map = load_json_file('./api/address_function.json')
+planner = NetworkPlanner.from_config_file('./api/topo.json', './api/node_config.json')
+src = data['ip_info']['source_ip']
+dest = data['ip_info']['destination_ip']
+sid = map[src]
+did = map[dest]
+mtype = data['modality_info']['modality']
+method = data['modality_info']['method']
+gpu = data['computational_constraints']['gpu_power']
+min_computing_power = extract_numbers(gpu)[0]
+bw = data['network_qos_constraints']['bandwidth_requirement']
+
+# 将带宽转换为Mbps
+if 'Gbps' in bw:
+    min_bandwidth = extract_numbers(bw)[0] * 1000  # 1 Gbps = 1000 Mbps
+elif 'Mbps' in bw:
+    min_bandwidth = extract_numbers(bw)[0]
+else:
+    min_bandwidth = extract_numbers(bw)[0]  # 默认假设为Mbps
+path, compute_nodes = planner.find_time_optimal_route(src=sid, dst=did, required_compute_nodes=2, min_computing_power=min_computing_power, min_bandwidth=min_bandwidth)
 print(path)
 print(compute_nodes)
 # 将路径转换为边的集合
@@ -26,7 +34,7 @@ for i in range(len(path) - 1):
     edges.append((path[i], path[i + 1]))
 # 构建 JSON 数据
 data = {
-    'id':current_timestamp,
+    'id': current_timestamp,
     "mname": mtype,
     "rname": method,
     "e": edges,
@@ -58,6 +66,5 @@ if data['e'] not in existing_es:
         json.dump(existing_data, file, ensure_ascii=False, indent=4)
 else:
     print("该路径的边集合已经存在于文件中，未添加重复项。")
-
 
 planner.visualize(path, compute_nodes)

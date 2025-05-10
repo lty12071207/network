@@ -3,310 +3,310 @@
         "label": "Link_0",
         "src": "0",
         "dest": "15",
-        "weight": 20,
-        "bw": 51,
-        "delay": 2.12,
-        "lost": 96,
-        "LinkUtilization": 62
+        "weight": 31,
+        "bw": 7994,
+        "delay": 0.41,
+        "lost": 72,
+        "LinkUtilization": 100
     },
     {
         "label": "Link_1",
         "src": "1",
         "dest": "2",
-        "weight": 71,
-        "bw": 55,
-        "delay": 2.87,
-        "lost": 49,
-        "LinkUtilization": 36
+        "weight": 85,
+        "bw": 5290,
+        "delay": 2.04,
+        "lost": 48,
+        "LinkUtilization": 1
     },
     {
         "label": "Link_2",
         "src": "1",
         "dest": "6",
-        "weight": 24,
-        "bw": 49,
-        "delay": 2.19,
-        "lost": 25,
-        "LinkUtilization": 41
+        "weight": 43,
+        "bw": 6698,
+        "delay": 1.17,
+        "lost": 14,
+        "LinkUtilization": 86
     },
     {
         "label": "Link_3",
         "src": "1",
         "dest": "15",
-        "weight": 11,
-        "bw": 76,
-        "delay": 0.78,
-        "lost": 99,
-        "LinkUtilization": 78
+        "weight": 92,
+        "bw": 8486,
+        "delay": 0.15,
+        "lost": 81,
+        "LinkUtilization": 48
     },
     {
         "label": "Link_5",
         "src": "2",
         "dest": "3",
-        "weight": 52,
-        "bw": 13,
-        "delay": 1.74,
-        "lost": 89,
-        "LinkUtilization": 74
+        "weight": 24,
+        "bw": 6634,
+        "delay": 1.31,
+        "lost": 31,
+        "LinkUtilization": 52
     },
     {
         "label": "Link_6",
         "src": "2",
         "dest": "6",
-        "weight": 12,
-        "bw": 50,
-        "delay": 0.82,
-        "lost": 25,
-        "LinkUtilization": 34
+        "weight": 21,
+        "bw": 6822,
+        "delay": 0.04,
+        "lost": 9,
+        "LinkUtilization": 30
     },
     {
         "label": "Link_7",
         "src": "2",
         "dest": "8",
-        "weight": 70,
-        "bw": 83,
-        "delay": 1.91,
-        "lost": 17,
-        "LinkUtilization": 80
+        "weight": 22,
+        "bw": 9448,
+        "delay": 2.63,
+        "lost": 28,
+        "LinkUtilization": 58
     },
     {
         "label": "Link_8",
         "src": "2",
         "dest": "17",
-        "weight": 37,
-        "bw": 70,
-        "delay": 1.32,
-        "lost": 82,
-        "LinkUtilization": 34
+        "weight": 98,
+        "bw": 5077,
+        "delay": 1.9,
+        "lost": 31,
+        "LinkUtilization": 84
     },
     {
         "label": "Link_9",
         "src": "2",
         "dest": "18",
-        "weight": 71,
-        "bw": 100,
-        "delay": 2.89,
-        "lost": 18,
-        "LinkUtilization": 32
+        "weight": 96,
+        "bw": 9229,
+        "delay": 2.76,
+        "lost": 40,
+        "LinkUtilization": 23
     },
     {
         "label": "Link_10",
         "src": "2",
         "dest": "19",
-        "weight": 100,
-        "bw": 57,
-        "delay": 0.3,
-        "lost": 96,
-        "LinkUtilization": 19
+        "weight": 72,
+        "bw": 5789,
+        "delay": 1.17,
+        "lost": 16,
+        "LinkUtilization": 53
     },
     {
         "label": "Link_12",
         "src": "4",
         "dest": "13",
-        "weight": 55,
-        "bw": 67,
-        "delay": 2.32,
-        "lost": 65,
-        "LinkUtilization": 24
+        "weight": 71,
+        "bw": 8157,
+        "delay": 1.89,
+        "lost": 49,
+        "LinkUtilization": 77
     },
     {
         "label": "Link_13",
         "src": "4",
         "dest": "6",
-        "weight": 75,
-        "bw": 16,
-        "delay": 1.38,
-        "lost": 35,
-        "LinkUtilization": 4
+        "weight": 16,
+        "bw": 6825,
+        "delay": 1.84,
+        "lost": 22,
+        "LinkUtilization": 25
     },
     {
         "label": "Link_14",
         "src": "4",
         "dest": "15",
-        "weight": 95,
-        "bw": 69,
-        "delay": 1.26,
-        "lost": 86,
-        "LinkUtilization": 70
+        "weight": 66,
+        "bw": 6235,
+        "delay": 2.7,
+        "lost": 70,
+        "LinkUtilization": 81
     },
     {
         "label": "Link_15",
         "src": "5",
         "dest": "7",
-        "weight": 84,
-        "bw": 57,
-        "delay": 1.65,
-        "lost": 4,
-        "LinkUtilization": 89
+        "weight": 87,
+        "bw": 8943,
+        "delay": 1.0,
+        "lost": 93,
+        "LinkUtilization": 8
     },
     {
         "label": "Link_16",
         "src": "5",
         "dest": "13",
-        "weight": 21,
-        "bw": 71,
-        "delay": 0.5,
-        "lost": 86,
-        "LinkUtilization": 31
+        "weight": 55,
+        "bw": 5098,
+        "delay": 2.42,
+        "lost": 18,
+        "LinkUtilization": 10
     },
     {
         "label": "Link_17",
         "src": "5",
         "dest": "6",
-        "weight": 53,
-        "bw": 40,
-        "delay": 1.48,
-        "lost": 55,
-        "LinkUtilization": 15
+        "weight": 12,
+        "bw": 7117,
+        "delay": 1.91,
+        "lost": 1,
+        "LinkUtilization": 42
     },
     {
         "label": "Link_18",
         "src": "5",
         "dest": "15",
-        "weight": 65,
-        "bw": 53,
-        "delay": 0.9,
-        "lost": 23,
-        "LinkUtilization": 5
+        "weight": 53,
+        "bw": 5922,
+        "delay": 0.88,
+        "lost": 89,
+        "LinkUtilization": 44
     },
     {
         "label": "Link_23",
         "src": "6",
         "dest": "7",
-        "weight": 16,
-        "bw": 84,
-        "delay": 0.88,
-        "lost": 10,
-        "LinkUtilization": 88
+        "weight": 48,
+        "bw": 8687,
+        "delay": 2.11,
+        "lost": 92,
+        "LinkUtilization": 48
     },
     {
         "label": "Link_27",
         "src": "8",
         "dest": "11",
-        "weight": 35,
-        "bw": 90,
-        "delay": 2.76,
-        "lost": 34,
-        "LinkUtilization": 79
+        "weight": 36,
+        "bw": 7794,
+        "delay": 2.62,
+        "lost": 28,
+        "LinkUtilization": 57
     },
     {
         "label": "Link_28",
         "src": "8",
         "dest": "15",
-        "weight": 38,
-        "bw": 69,
-        "delay": 0.44,
-        "lost": 78,
-        "LinkUtilization": 72
+        "weight": 29,
+        "bw": 8892,
+        "delay": 1.89,
+        "lost": 20,
+        "LinkUtilization": 10
     },
     {
         "label": "Link_29",
         "src": "9",
         "dest": "15",
-        "weight": 32,
-        "bw": 55,
-        "delay": 1.24,
-        "lost": 50,
-        "LinkUtilization": 0
+        "weight": 31,
+        "bw": 8253,
+        "delay": 2.84,
+        "lost": 27,
+        "LinkUtilization": 74
     },
     {
         "label": "Link_30",
         "src": "10",
         "dest": "11",
-        "weight": 50,
-        "bw": 14,
-        "delay": 0.34,
-        "lost": 90,
-        "LinkUtilization": 67
+        "weight": 53,
+        "bw": 6881,
+        "delay": 2.17,
+        "lost": 84,
+        "LinkUtilization": 71
     },
     {
         "label": "Link_33",
         "src": "11",
         "dest": "15",
-        "weight": 22,
-        "bw": 14,
-        "delay": 1.9,
-        "lost": 71,
-        "LinkUtilization": 12
+        "weight": 49,
+        "bw": 6671,
+        "delay": 0.34,
+        "lost": 27,
+        "LinkUtilization": 54
     },
     {
         "label": "Link_34",
         "src": "12",
         "dest": "13",
-        "weight": 43,
-        "bw": 40,
-        "delay": 1.52,
-        "lost": 63,
-        "LinkUtilization": 78
+        "weight": 98,
+        "bw": 9166,
+        "delay": 2.13,
+        "lost": 70,
+        "LinkUtilization": 23
     },
     {
         "label": "Link_35",
         "src": "12",
         "dest": "15",
-        "weight": 73,
-        "bw": 85,
-        "delay": 1.26,
-        "lost": 59,
-        "LinkUtilization": 15
+        "weight": 26,
+        "bw": 6123,
+        "delay": 0.36,
+        "lost": 71,
+        "LinkUtilization": 53
     },
     {
         "label": "Link_39",
         "src": "13",
         "dest": "14",
-        "weight": 83,
-        "bw": 95,
-        "delay": 0.03,
-        "lost": 34,
-        "LinkUtilization": 27
+        "weight": 95,
+        "bw": 8964,
+        "delay": 0.91,
+        "lost": 20,
+        "LinkUtilization": 76
     },
     {
         "label": "Link_40",
         "src": "13",
         "dest": "15",
-        "weight": 92,
-        "bw": 78,
-        "delay": 2.92,
-        "lost": 31,
-        "LinkUtilization": 82
+        "weight": 28,
+        "bw": 9053,
+        "delay": 2.73,
+        "lost": 69,
+        "LinkUtilization": 15
     },
     {
         "label": "Link_41",
         "src": "13",
         "dest": "16",
-        "weight": 97,
-        "bw": 68,
-        "delay": 1.15,
-        "lost": 43,
-        "LinkUtilization": 65
+        "weight": 49,
+        "bw": 6999,
+        "delay": 0.36,
+        "lost": 56,
+        "LinkUtilization": 49
     },
     {
         "label": "Link_43",
         "src": "14",
         "dest": "15",
-        "weight": 69,
-        "bw": 36,
-        "delay": 2.21,
+        "weight": 92,
+        "bw": 7306,
+        "delay": 0.06,
         "lost": 0,
-        "LinkUtilization": 91
+        "LinkUtilization": 49
     },
     {
         "label": "Link_54",
         "src": "15",
         "dest": "16",
-        "weight": 34,
-        "bw": 56,
-        "delay": 0.56,
-        "lost": 84,
-        "LinkUtilization": 17
+        "weight": 74,
+        "bw": 8023,
+        "delay": 2.5,
+        "lost": 14,
+        "LinkUtilization": 58
     },
     {
         "label": "Link_55",
         "src": "15",
         "dest": "17",
-        "weight": 77,
-        "bw": 34,
-        "delay": 1.22,
-        "lost": 45,
-        "LinkUtilization": 84
+        "weight": 98,
+        "bw": 9746,
+        "delay": 2.63,
+        "lost": 76,
+        "LinkUtilization": 2
     }
 ]

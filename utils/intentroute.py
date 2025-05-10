@@ -241,7 +241,6 @@ class NetworkPlanner:
             # 筛选满足GPU的节点
             valid_nodes = [n for n in intermediates
                            if self.G.nodes[n]['gpu_power'] >= min_computing_power]
-
             # 检查计算节点数量
             if len(valid_nodes) < required_compute_nodes:
                 continue
