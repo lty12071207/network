@@ -1,4 +1,12 @@
 import json
+import re
+
+def extract_numbers(s):
+    # 使用正则表达式查找所有匹配的数字
+    numbers = re.findall(r'-?\d+\.?\d*', s)
+    # 将提取的数字字符串转换为浮点数
+    return [float(num) for num in numbers]
+
 def save_json_to_file(data, file_path='data.json'):
     """
     将 JSON 数据保存到文件中。
