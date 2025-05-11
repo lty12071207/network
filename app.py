@@ -44,7 +44,7 @@ def final():
     #route = load_json_file('./api/testroute.json')
     topology_data = drawroute('./api/topo.json', './api/node_config.json',route)
 
-    return render_template('testshowroute.html', topology_data=topology_data)
+    return render_template('test2.html', topology_data=topology_data)
 
 # API 路由，返回拓扑数据（如果需要动态获取）
 @app.route('/api/topology', methods=['GET'])
