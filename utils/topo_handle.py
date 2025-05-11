@@ -1,6 +1,10 @@
 import json
 from collections import defaultdict
 import random
+
+from network.utils.intent_handel import load_json_file
+
+
 def convert_txt_to_json(input_filename, output_filename='output.json'):
     """
     Converts a text file with link data into a JSON file.
@@ -236,8 +240,8 @@ def drawroute(input_json_file, config, path_results):
              "path_id": None,
              "path_name": None,
              "strategy": None,  # 传递策略类型
-             "lineStyle": {"color": "#000000"},  # 根据策略设置颜色
-             "label": {"show": True, "formatter": None}
+             "lineStyle": {"color": "#000000","curveness":0},  # 根据策略设置颜色
+             "label": {"show": False, "formatter": None}
              })
 
     # 构造拓扑数据
@@ -248,6 +252,7 @@ def drawroute(input_json_file, config, path_results):
             if str(i['name']) == str(j['id']):
                 i['storage'] = {}
                 i['computing'] = {}
+                i['cost'] = j['cost']
                 i['storage']['capacity'] = j['storage']['capacity']
                 i['storage']['performance'] = j['storage']['performance']
                 i['computing']['cpu_power'] = j['computing']['cpu_power']
@@ -270,7 +275,6 @@ def drawroute(input_json_file, config, path_results):
 
         # 生成路径边（独立边）
         for src, target in path["e"]:
-            print(src,target)
             # 查找原始边属性
             original_edge = next(
                 (e for e in data if e["src"] == src and e["dest"] == target),
@@ -284,31 +288,99 @@ def drawroute(input_json_file, config, path_results):
                 "utl": original_edge.get("LinkUtilization", "N/A"),
                 "path_id": path["id"],
                 "path_name": path["mname"],
-                "strategy": strategy,  # 传递策略类型
-                "lineStyle": {"color": color},  # 根据策略设置颜色
-                "label": {"show": True, "formatter": path["mname"]}
+                "strategy": int(strategy),  # 传递策略类型
+                "lineStyle": {"color": color,'curveness':-100},  # 根据策略设置颜色
+                "label": {"show": False, "formatter": path["mname"]}
             })
 
-    # 更新节点大小（根据路径经过次数）
+    # # 更新节点大小（根据路径经过次数）
+    # for node in nodes:
+    #     count = node_path_counts.get(int(node["name"]), 0)
+    #     node["symbolSize"] = [80 * (1 + 0.5 * count)] * 2  # 放大系数
+
     for node in nodes:
         count = node_path_counts.get(int(node["name"]), 0)
-        node["symbolSize"] = [80 * (1 + 0.2 * count)] * 2  # 放大系数
+        base_size = 80
+        node["symbolSize"] = [base_size * (1 + 0.5 * count)] * 2
 
-    # links.append(path_edges[0])
-    # for i in links:
-    #     print(i)
-    # # 合并数据并返回
+        if count > 0:
+            # 使用高对比度颜色配置
+            border_color = "#00FF00" if count <= 2 else "#FFD700"  # 亮绿/金色
+            pulse_effect = {
+                "period": 2,  # 呼吸周期2秒
+                "loop": True,
+                "effect": {
+                    "borderColor": border_color,
+                    "borderWidth": 3 + count * 2
+                }
+            }
+
+            node.update({
+                "itemStyle": {
+                    "borderColor": border_color,
+                    "borderWidth": 5 + count,  # 加粗边框
+                    "borderType": "solid",
+                    "color": "rgba(255,255,255,0)",  # 完全透明填充
+                    "shadowBlur": 20 + count * 5,  # 增强阴影
+                    "shadowColor": "#AAAFFF"  # 金色阴影
+                },
+                "emphasis": {
+                    "itemStyle": {
+                        "borderWidth": 8 + count,
+                        "shadowBlur": 30
+                    }
+                },
+                "animationEasing": "elasticOut",
+                "animationDuration": 1000,
+                "animationDelay": count * 100,
+                "pulseEffect": pulse_effect  # 添加呼吸动画
+            })
+
+            # 添加外发光特效（覆盖在图片上层）
+            node.setdefault("emphasis", {}).update({
+                "focus": "self",
+                "blurScope": "coordinateSystem",
+                "label": {
+                    "show": True,
+                    "formatter": f"★{count}",
+                    "color": "#ABCDEF",
+                    "fontSize": 14 + count * 2,
+                    "position": "top"
+                }
+            })
+
+
+    # 1. 标准化边分组（不考虑方向）
+    edge_groups = defaultdict(list)
+    for edge in path_edges:
+         # 标准化节点对（排序后小值在前）
+        sorted_nodes = sorted([edge["source"], edge["target"]], key=int)
+        group_key = f"{sorted_nodes[0]}-{sorted_nodes[1]}"
+        edge_groups[group_key].append(edge)
+
+        # 2. 为每组边分配递增曲率
+    for group_key, edges in edge_groups.items():
+            # 对每个边按顺序分配0.02、0.04、0.06...的曲率
+        for idx, edge in enumerate(edges):
+                # 基础曲率步长设为0.02
+            base_curveness = 0.04
+                # 计算当前边的曲率（使用索引+1保证最小0.02）
+            curveness = base_curveness * (idx + 1)
+                # 应用曲率设置
+            edge["lineStyle"]["curveness"] = curveness
+
     topology_data = {
         "nodes": nodes,
         "links": links+path_edges,
         "path_config": {
             # 生成策略类型到颜色的映射表（去重）
             "strategies": {
-                s: strategy_color_map.get(s, "#CCCCCC")
+                s: strategy_color_map.get(int(s), "#CCCCCC")
                 for s in {p["rname"] for p in path_results}
             }
         }
     }
+    print(topology_data['path_config'])
     return topology_data
 
 
@@ -322,4 +394,7 @@ if __name__ == "__main__":
     #output_file = os.path.join(script_dir, 'api', 'topo.json')
     input_file = '../api/bandcon_topo.txt'  # 指定输入文件名
     output_file = '../api/topo.json'  # 指定输出文件名
-    convert_txt_to_json(input_file, output_file)
+    route = load_json_file('../api/route.json')
+    #route = load_json_file('./api/testroute.json')
+    topology_data = drawroute('../api/topo.json', '../api/node_config.json', route)
+    #convert_txt_to_json(input_file, output_file)

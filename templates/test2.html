@@ -50,29 +50,45 @@
          * @returns {string} - 格式化后的提示框内容
          */
         function tooltipFormatter(params) {
-            if (params.dataType === 'edge') {
-                const { source, target, path_id, path_name, strategy,lineStyle } = params.data;
-                return `
-                    <div style="text-align: left;">
-                        <div>路径ID: ${path_id}</div>
-                        <div>策略: <span style="color:${params.data.lineStyle.color}">■</span> ${strategy}</div>
-                        <div>名称: ${path_name}</div>
-                        <hr/>
-                        <div>带宽: ${params.data.bw}</div>
-                        <div>时延: ${params.data.delay}</div>
-                    </div>
-                `;
+             if (params.dataType === 'edge') {
+                const { source, target, path_id, path_name, strategy, lineStyle, bw, delay,weight } = params.data;
+
+                // 标准化颜色判断（支持hex/rgb/颜色名）
+                const edgeColor = (lineStyle.color || "").toLowerCase();
+                const isBlack = ["#000000", "#000", "black", "rgb(0,0,0)", "rgba(0,0,0,1)"].includes(edgeColor);
+
+                // 根据颜色生成不同内容
+                if (isBlack) {
+                    return `
+                        <div style="text-align: left;padding:8px">
+                            <div>带宽: ${bw || 'N/A'}</div>
+                            <div>时延: ${delay || 'N/A'}</div>
+                            <div>成本: ${weight || 'N/A'} 元/小时</div>
+
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div style="text-align: left;padding:8px">
+                            <div>路径ID: <strong>${path_id || 'N/A'}</strong></div>
+                            <div>策略: <span style="color:${lineStyle.color}">■</span> ${strategy || 'N/A'}</div>
+                            <div>名称: ${path_name || '未命名路径'}</div>
+                        </div>
+                    `;
+                }
             } else if (params.dataType === 'node') {
-                const {name, storage, computing,path_ids = []} = params.data;
+                const {name, storage, computing,cost,path_ids = []} = params.data;
                 const pathInfo = topologyData.path_config.strategies;
                 return `
                     <div style="text-align: left;">
                         <div>节点: ${name}</div>
+                        <div>成本: ${cost}小时/元</div>
                         <div>存储容量: ${storage.capacity}</div>
                         <div>存储性能: ${storage.performance}</div>
                         <div>CPU算力: ${computing.cpu_power}</div>
                         <div>GPU算力: ${computing.gpu_power} TFLOPS</div>
                         <div>节点算力利用率: ${computing.gpu_Utilization}</div>
+
                         <div>经过的路径:
                             ${path_ids.map(id => `
                                 <div><span style="color:${pathInfo[id]}">■</span> ${id}</div>
@@ -82,6 +98,37 @@
                 `;
             }
         }
+        topologyData.links.forEach(link => {
+            const linkColor = (link.lineStyle?.color || '').toLowerCase();
+            const isBlack = ['#000000', '#000', 'black'].includes(linkColor);
+
+            if (isBlack) {
+                Object.assign(link.lineStyle, {
+                    color: "#000000",
+                    curveness: 0,  // 确保黑色边曲率为0
+                    width: 3,
+                    type: "solid"
+                });
+            } else {
+                link.lineStyle = link.lineStyle || {};
+                // 确保曲率值合法，并保留后端设置的值
+                if (typeof link.lineStyle.curveness === 'number') {
+                    link.lineStyle.curveness = Math.min(Math.max(
+                        link.lineStyle.curveness,
+                        -1
+                    ), 1);
+                }
+                // 补充其他样式，不覆盖曲率
+                Object.assign(link.lineStyle, {
+                    width: 2,
+                    type: "solid",
+                    opacity: 0.9
+                });
+            }
+        });
+
+
+
 
 
         // 配置 ECharts 选项
@@ -107,23 +154,26 @@
                     color: '#333',
                     formatter: '{b}'
                 },
-                lineStyle: {
-                    color: '#99a9bf',
-                    width: 2,
-                    curveness: 0,
-                    type: (params) => params.data.lineStyle?.color ? 'solid' : 'dashed' // 区分原始边
-                },
-                edgeLabel: {
-                    show: true,
-                    formatter: (params) => params.data.path_name || '',
-                    color: (params) => params.data.lineStyle?.color || '#999'
-                },
-<!--                lineStyle: {-->
-<!--                    color: (params) => params.data.lineStyle?.color || '#99a9bf',-->
-<!--                    width: 4, // 加粗线条宽度-->
-<!--                    curveness: (params) => params.data.lineStyle?.curveness || 0, // 动态曲率-->
-<!--                    type: (params) => params.data.lineStyle?.color ? 'solid' : 'dashed'-->
-<!--                },-->
+
+<!--               lineStyle: {-->
+<!--                color: (params) => params.data.lineStyle.color,-->
+<!--                width: (params) => params.data.lineStyle.width || 2,-->
+<!--                curveness: (params) => params.data.lineStyle.curveness,-->
+<!--                type: (params) => params.data.lineStyle.type-->
+<!--            },-->
+             lineStyle: {
+                color: (params) => params.data.lineStyle.color, // 直接使用后端颜色
+                width: (params) => params.data.lineStyle.width,
+                //curveness: (params) => params.data.lineStyle.curveness,
+                type: (params) => params.data.lineStyle.type
+            },
+<!--            edgeLabel: {-->
+<!--                show: false,-->
+<!--                formatter: (params) => params.data.path_name,-->
+<!--                color: (params) => params.data.lineStyle.color,-->
+<!--                fontSize: 12,-->
+<!--                backgroundColor: 'rgba(255,255,255,0.9)'-->
+<!--            },-->
 <!--                edgeLabel: {-->
 <!--                    show: true,-->
 <!--                    formatter: (params) => params.data.path_name || '',-->
@@ -140,13 +190,18 @@
                 },
                 data: topologyData.nodes,
                 links: topologyData.links,
+                itemStyle: {
+                    borderColor: params => params.data.pulseEffect?.effect.borderColor,
+                    borderWidth: params => params.data.itemStyle?.borderWidth
+                },
                 emphasis: {
                     scale: true,
                     focus: 'adjacency',
                     label: { show: true, fontWeight: 'bold' },
                     itemStyle: {
                         shadowBlur: 10,
-                        shadowColor: 'rgba(0, 0, 0, 0.3)'
+                        shadowColor: 'rgba(0, 0, 0, 0.3)',
+                        borderWidth: params => params.data.emphasis?.itemStyle.borderWidth
                     }
                 }
             }]
