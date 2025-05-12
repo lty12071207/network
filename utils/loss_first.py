@@ -6,7 +6,7 @@ import json
 import time
 
 
-class cNetworkPlanner:
+class NetworkPlanner:
     def __init__(self, num_nodes, num_links, required_compute_nodes=2, min_computing_power=0, min_bandwidth=0):
         """
         初始化网络规划器
@@ -218,7 +218,7 @@ class cNetworkPlanner:
     def ant_colony_optimization(self, source, destination, num_computing_nodes,min_computing_power,min_bandwidth,packet_size=100, num_ants=20, max_iter=50,
                                 alpha=1, beta=2, rho=0.5):
         """
-        使用蚁群算法搜索成本最小路径
+        使用蚁群算法搜索丢包率最小路径
         :param source: 源节点 ID
         :param destination: 目的节点 ID
         :param packet_size: 数据包大小
@@ -228,7 +228,7 @@ class cNetworkPlanner:
         :param alpha: 信息素重要程度因子
         :param beta: 启发式因子
         :param rho: 信息素挥发因子
-        :return: 成本最小路径，如果不存在满足条件的路径则返回 None
+        :return: 丢包率最小化路径，如果不存在满足条件的路径则返回 None
         """
         self.apply_constraints(num_computing_nodes,min_computing_power,min_bandwidth)
         num_nodes = len(self.G.nodes())
@@ -254,11 +254,12 @@ class cNetworkPlanner:
                         break
                     probabilities = []
                     for neighbor in unvisited_neighbors:
-                        # 计算启发式信息：成本的倒数
-                        edge_cost = self.G[current][neighbor]['cost']
-                        node_computing_cost = self.G.nodes[neighbor]['cost']
-                        total_cost = node_computing_cost + edge_cost
-                        heuristic = 1 / total_cost
+                        # 修改为获取边的丢包率
+                        edge_loss = self.G[current][neighbor]['loss']
+                        # 修改为获取节点的丢包率（假设节点也有丢包率属性，若没有可根据实际情况调整）
+                        node_loss = self.G.nodes[neighbor].get('loss', 0)  # 若节点没有丢包率属性，默认设为0
+                        total_loss = node_loss + edge_loss
+                        heuristic = 1 / (total_loss + 1e-6)  # 避免除零错误
                         pheromone_value = pheromone[current][neighbor]
                         probability = (pheromone_value ** alpha) * (heuristic ** beta)
                         probabilities.append(probability)
@@ -271,87 +272,64 @@ class cNetworkPlanner:
 
                 if len(path) - 2 >= num_computing_nodes and path[-1] == destination:
                     all_ant_paths.append(path)
-                    total_cost = self.calculate_total_cost(path, packet_size, num_computing_nodes)
-                    all_ant_cost.append(total_cost)
-                    if total_cost < best_cost:
-                        best_cost = total_cost
+                    total_loss = self.calculate_total_loss(path)  # 修改为计算总丢包率
+                    all_ant_cost.append(total_loss)
+                    if total_loss < best_cost:
+                        best_cost = total_loss
                         best_path = path
 
             # 更新信息素
             pheromone *= (1 - rho)  # 信息素挥发
             if all_ant_paths:
-                for path, delay in zip(all_ant_paths, all_ant_cost):
-                    delta_pheromone = 1 / delay
+                for path, loss in zip(all_ant_paths, all_ant_cost):
+                    delta_pheromone = 1 / (loss + 1e-6)  # 避免除零错误
                     for i in range(len(path) - 1):
                         u, v = path[i], path[i + 1]
                         pheromone[u][v] += delta_pheromone
                         pheromone[v][u] += delta_pheromone
         intermediate_nodes = best_path[1:-1]
-        sorted_nodes = sorted(intermediate_nodes, key=lambda node: self.get_node_cost(node))
-        # 选取成本最小的的前三个节点
+        sorted_nodes = sorted(intermediate_nodes, key=lambda node: self.G.nodes[node].get('loss', 0))  # 根据节点丢包率排序
+        # 选取丢包率最小的的前三个节点
         top_three_computing_nodes = sorted_nodes[:3]
         return best_path,top_three_computing_nodes
 
-    def calculate_total_cost(self, path, packet_size, num_computing_nodes):
+    def calculate_total_loss(self, path):
         """
-        计算路径的总成本
+        计算路径的总丢包率
         :param path: 路径
-        :param packet_size: 数据包大小
-        :param num_computing_nodes: 计算节点数
-        :return: 总成本
+        :return: 总丢包率
         """
-        total_cost = 0
-
+        total_loss = 0
         for i in range(len(path) - 1):
-            total_cost += self.get_link_propagation_cost(path[i], path[i + 1])
+            # 累加边的丢包率
+            total_loss += self.G[path[i]][path[i + 1]]['loss']
+            # 累加节点的丢包率（假设节点也有丢包率属性，若没有可根据实际情况调整）
+            total_loss += self.G.nodes[path[i + 1]].get('loss', 0)
+        return total_loss
 
-        # 提取中间节点
-        intermediate_nodes = path[1:-1]
-        # 根据成本对中间节点进行排序
-        sorted_nodes = sorted(intermediate_nodes, key=lambda node: self.get_node_cost(node))
-        # 选取成本最小的前三个节点
-        top_three_computing_nodes = sorted_nodes[:3]
 
-        # 计算计算能力最强的前三个节点的计算时延
-        for node in top_three_computing_nodes:
-            computing_power_cost = self.get_node_cost(node)
 
-            total_cost += computing_power_cost
-
-        return total_cost
-    def _check_bandwidth(self, path, min_bandwidth):
-        """
-        检查路径上的所有边是否满足最小带宽约束
-        :param path: 路径
-        :param min_bandwidth: 最小带宽
-        :return: 如果路径上所有边都满足带宽约束则返回 True，否则返回 False
-        """
-        for i in range(len(path) - 1):
-            u, v = path[i], path[i + 1]
-            if self.G.has_edge(u, v) and self.G[u][v]['bandwidth'] < min_bandwidth:
-                return False
-        return True
 
 # 示例用法
 if __name__ == "__main__":
     # 从配置文件中读取网络信息
-    planner = cNetworkPlanner.from_config_file('../api/topo.json', '../api/node_config.json')
+    planner = NetworkPlanner.from_config_file('../api/topo.json', '../api/node_config.json')
     start_time = time.time();
     # 路径规划需求
     source = 0
-    destination = 19
+    destination = 18
     packet_size = 100  # 要处理的数据包大小
     num_computing_nodes = 3  # 源、目的以及中间3个计算节点（共5个）
 
     # 使用蚁群算法寻找路径
-    path,select_node= planner.ant_colony_optimization(source, destination,  num_computing_nodes,10,2500)
+    path,select_node= planner.ant_colony_optimization(source, destination,  num_computing_nodes,10,10)
 
     if path:
-        min_cost = planner.calculate_total_cost(path, packet_size, num_computing_nodes)
+        min_loss = planner.calculate_total_loss(path)
         print("找到的路径：", path)
 
         print("中间节点：", select_node)
-        print("最小成本为", min_cost)
+        print("最小丢包率为", min_loss)
         end_time = time.time();
         print('时间差为' + str(end_time - start_time))
 
@@ -359,9 +337,3 @@ if __name__ == "__main__":
         planner.visualize(path=path)
     else:
         print("不存在路径")
-
-
-
-
-
-# 示例用法
