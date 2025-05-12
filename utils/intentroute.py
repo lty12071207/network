@@ -47,6 +47,26 @@ class NetworkPlanner:
             propagation_delay = random.randint(1, 10)
             self.G.add_edge(u, v, propagation_delay=propagation_delay)
 
+
+    def apply_constraints(self,num_computing_nodes,min_computing_power,min_bandwidth):
+        """
+        应用节点算力和边带宽的约束条件
+        """
+
+        self.required_compute_nodes = num_computing_nodes
+        self.min_computing_power = min_computing_power
+        self.min_bandwidth = min_bandwidth
+        # 删除不满足算力约束的节点及其相连的边
+        nodes_to_remove = [node for node, data in self.G.nodes(data=True) if
+                           data['computing_power'] < self.min_computing_power]
+        for node in nodes_to_remove:
+            self.G.remove_node(node)
+
+        # 删除不满足带宽约束的边
+        edges_to_remove = [(u, v) for u, v, data in self.G.edges(data=True) if data['bandwidth'] < self.min_bandwidth]
+        for u, v in edges_to_remove:
+            self.G.remove_edge(u, v)
+
     @classmethod
     def from_config_file(cls, topofile,nodefile):
         """
@@ -75,7 +95,7 @@ class NetworkPlanner:
             cost = node["cost"]
             uti= node["computing"]["gpu_Utilization"]
             # 从配置文件读取节点信息并添加到图中
-            planner.G.add_node(node_id, computing_power=computing_power, id=node_id, cost=cost,gpu_power=gpu_power,capacity=capacity,performance=performance,uti=uti)
+            planner.G.add_node(node_id, computing_power=gpu_power, id=node_id, cost=cost,gpu_power=gpu_power,capacity=capacity,performance=performance,uti=uti)
 
         # 添加边
         for edge in configlink:
@@ -87,7 +107,7 @@ class NetworkPlanner:
             loss=edge['lost']
             luti=edge['LinkUtilization']
             # 从配置文件读取边信息并添加到图中
-            planner.G.add_edge(u, v, propagation_delay=propagation_delay, cost=cost,bandwith=bandwith,loss=loss,luti=luti)
+            planner.G.add_edge(u, v, propagation_delay=propagation_delay, cost=cost,bandwidth=bandwith,loss=loss,luti=luti)
 
         return planner
 
@@ -273,7 +293,7 @@ class NetworkPlanner:
     def _check_bandwidth(self, path, min_bw):
         """检查路径带宽是否达标"""
         for u, v in zip(path, path[1:]):
-            if int(self.G.edges[u, v]['bandwith']) < min_bw:
+            if int(self.G.edges[u, v]['bandwidth']) < min_bw:
                 return False
         return True
 
@@ -293,6 +313,227 @@ class NetworkPlanner:
         for node in nodes:
             if node not in self.G.nodes:
                 raise ValueError(f"节点 {node} 不存在")
+
+
+    def find_cost_optimal_route(self, source, destination, num_computing_nodes,min_computing_power,min_bandwidth,packet_size=100, num_ants=20, max_iter=50,
+                                alpha=1, beta=2, rho=0.5):
+        """
+        使用蚁群算法搜索成本最小路径
+        :param source: 源节点 ID
+        :param destination: 目的节点 ID
+        :param packet_size: 数据包大小
+        :param num_computing_nodes: 计算节点数
+        :param num_ants: 蚂蚁数量
+        :param max_iter: 最大迭代次数
+        :param alpha: 信息素重要程度因子
+        :param beta: 启发式因子
+        :param rho: 信息素挥发因子
+        :return: 成本最小路径，如果不存在满足条件的路径则返回 None
+        """
+        self.apply_constraints(num_computing_nodes,min_computing_power,min_bandwidth)
+        num_nodes = len(self.G.nodes())
+        # 初始化信息素矩阵
+        pheromone = np.ones((num_nodes, num_nodes))
+        best_path = None
+        best_cost = float('inf')
+
+        for _ in range(max_iter):
+            all_ant_paths = []
+            all_ant_cost = []
+
+            for _ in range(num_ants):
+                # 初始化蚂蚁路径，从源节点开始
+                path = [source]
+                current = source
+                while current != destination:
+                    # 获取当前节点的所有邻居节点
+                    neighbors = list(self.G.neighbors(current))
+                    # 获取未访问过的邻居节点
+                    unvisited_neighbors = [n for n in neighbors if n not in path]
+                    if not unvisited_neighbors:
+                        break
+                    probabilities = []
+                    for neighbor in unvisited_neighbors:
+                        # 计算启发式信息：成本的倒数
+                        edge_cost = self.G[current][neighbor]['cost']
+                        node_computing_cost = self.G.nodes[neighbor]['cost']
+                        total_cost = node_computing_cost + edge_cost
+                        heuristic = 1 / total_cost
+                        pheromone_value = pheromone[current][neighbor]
+                        probability = (pheromone_value ** alpha) * (heuristic ** beta)
+                        probabilities.append(probability)
+                    # 计算概率分布
+                    probabilities = np.array(probabilities) / np.sum(probabilities)
+                    # 根据概率选择下一个节点
+                    next_node = np.random.choice(unvisited_neighbors, p=probabilities)
+                    path.append(next_node)
+                    current = next_node
+
+                if len(path) - 2 >= num_computing_nodes and path[-1] == destination:
+                    all_ant_paths.append(path)
+                    total_cost = self.calculate_total_cost(path, packet_size, num_computing_nodes)
+                    all_ant_cost.append(total_cost)
+                    if total_cost < best_cost:
+                        best_cost = total_cost
+                        best_path = path
+
+            # 更新信息素
+            pheromone *= (1 - rho)  # 信息素挥发
+            if all_ant_paths:
+                for path, delay in zip(all_ant_paths, all_ant_cost):
+                    delta_pheromone = 1 / delay
+                    for i in range(len(path) - 1):
+                        u, v = path[i], path[i + 1]
+                        pheromone[u][v] += delta_pheromone
+                        pheromone[v][u] += delta_pheromone
+        intermediate_nodes = best_path[1:-1]
+        sorted_nodes = sorted(intermediate_nodes, key=lambda node: self.get_node_cost(node))
+        # 选取成本最小的的前三个节点
+        top_three_computing_nodes = sorted_nodes[:num_computing_nodes]
+        return best_path,top_three_computing_nodes
+
+    def calculate_total_cost(self, path, packet_size, num_computing_nodes):
+        """
+        计算路径的总成本
+        :param path: 路径
+        :param packet_size: 数据包大小
+        :param num_computing_nodes: 计算节点数
+        :return: 总成本
+        """
+        total_cost = 0
+
+        for i in range(len(path) - 1):
+            total_cost += self.get_link_propagation_cost(path[i], path[i + 1])
+
+        # 提取中间节点
+        intermediate_nodes = path[1:-1]
+        # 根据成本对中间节点进行排序
+        sorted_nodes = sorted(intermediate_nodes, key=lambda node: self.get_node_cost(node))
+        # 选取成本最小的前三个节点
+        top_three_computing_nodes = sorted_nodes[:num_computing_nodes]
+
+        # 计算计算能力最强的前三个节点的计算时延
+        for node in top_three_computing_nodes:
+            computing_power_cost = self.get_node_cost(node)
+
+            total_cost += computing_power_cost
+
+        return total_cost
+
+    def get_node_cost(self, node_id):
+        """
+        获取指定节点的租用成本
+        :param node_id: 节点ID
+        :return: 节点的租用成本
+        """
+        if node_id not in self.G.nodes():
+            # 若节点不存在，抛出异常
+            raise ValueError("节点 %s 不存在" % node_id)
+        # 直接访问节点的计算能力属性
+        return self.G.nodes[node_id]['cost']
+
+
+    def find_utl_optimal_route(self, source, destination, num_computing_nodes,min_computing_power,min_bandwidth,packet_size=100, num_ants=20, max_iter=50,
+                                alpha=1, beta=2, rho=0.5):
+        """
+        使用蚁群算法搜索利用率最小路径
+        :param source: 源节点 ID
+        :param destination: 目的节点 ID
+        :param packet_size: 数据包大小
+        :param num_computing_nodes: 计算节点数
+        :param num_ants: 蚂蚁数量
+        :param max_iter: 最大迭代次数
+        :param alpha: 信息素重要程度因子
+        :param beta: 启发式因子
+        :param rho: 信息素挥发因子
+        :return: 利用率最小路径，如果不存在满足条件的路径则返回 None
+        """
+        self.apply_constraints(num_computing_nodes,min_computing_power,min_bandwidth)
+        num_nodes = len(self.G.nodes())
+        # 初始化信息素矩阵
+        pheromone = np.ones((num_nodes, num_nodes))
+        best_path = None
+        best_utilization = float('inf')
+
+        for _ in range(max_iter):
+            all_ant_paths = []
+            all_ant_utilization = []
+
+            for _ in range(num_ants):
+                # 初始化蚂蚁路径，从源节点开始
+                path = [source]
+                current = source
+                while current != destination:
+                    # 获取当前节点的所有邻居节点
+                    neighbors = list(self.G.neighbors(current))
+                    # 获取未访问过的邻居节点
+                    unvisited_neighbors = [n for n in neighbors if n not in path]
+                    if not unvisited_neighbors:
+                        break
+                    probabilities = []
+                    for neighbor in unvisited_neighbors:
+                        # 计算启发式信息：利用率的倒数
+                        node_uti = self.G.nodes[neighbor]['uti']
+                        link_luti = self.G[current][neighbor]['luti']
+                        total_utilization = node_uti + link_luti
+                        heuristic = 1 / total_utilization
+                        pheromone_value = pheromone[current][neighbor]
+                        probability = (pheromone_value ** alpha) * (heuristic ** beta)
+                        probabilities.append(probability)
+                    # 计算概率分布
+                    probabilities = np.array(probabilities) / np.sum(probabilities)
+                    # 根据概率选择下一个节点
+                    next_node = np.random.choice(unvisited_neighbors, p=probabilities)
+                    path.append(next_node)
+                    current = next_node
+
+                if len(path) - 2 >= num_computing_nodes and path[-1] == destination:
+                    all_ant_paths.append(path)
+                    total_utilization = self.calculate_total_utilization(path, num_computing_nodes)
+                    all_ant_utilization.append(total_utilization)
+                    if total_utilization < best_utilization:
+                        best_utilization = total_utilization
+                        best_path = path
+
+            # 更新信息素
+            pheromone *= (1 - rho)  # 信息素挥发
+            if all_ant_paths:
+                for path, utilization in zip(all_ant_paths, all_ant_utilization):
+                    delta_pheromone = 1 / utilization
+                    for i in range(len(path) - 1):
+                        u, v = path[i], path[i + 1]
+                        pheromone[u][v] += delta_pheromone
+                        pheromone[v][u] += delta_pheromone
+        intermediate_nodes = best_path[1:-1]
+        sorted_nodes = sorted(intermediate_nodes, key=lambda node: self.G.nodes[node]['uti'])
+        # 选取 uti 最小的的前三个节点
+        top_three_computing_nodes = sorted_nodes[:num_computing_nodes]
+        return best_path,top_three_computing_nodes
+
+    def calculate_total_utilization(self, path, num_computing_nodes):
+        """
+        计算路径的总利用率
+        :param path: 路径
+        :param num_computing_nodes: 计算节点数
+        :return: 总利用率
+        """
+        total_utilization = 0
+
+        for i in range(len(path) - 1):
+            total_utilization += self.G[path[i]][path[i + 1]]['luti']
+
+        # 提取中间节点
+        intermediate_nodes = path[1:-1]
+        # 根据 uti 对中间节点进行排序
+        sorted_nodes = sorted(intermediate_nodes, key=lambda node: self.G.nodes[node]['uti'])
+        # 选取 uti 最小的前 num_computing_nodes 个节点
+        top_computing_nodes = sorted_nodes[:num_computing_nodes]
+
+        # 计算 uti 最小的前 num_computing_nodes 个节点的 uti 总和
+        for node in top_computing_nodes:
+            total_utilization += self.G.nodes[node]['uti']
+
+        return total_utilization
 
 # 示例用法
 if __name__ == "__main__":

@@ -24,10 +24,10 @@ def convert_txt_to_json(input_filename, output_filename='output.json'):
                     "src": src,
                     "dest": dest,
                     "weight": random.randint(10, 100),
-                    "bw": random.randint(5000, 10000),
+                    "bw": random.randint(9000, 10000),
                     "delay": round(random.random()*3,2),
                     "lost": random.randint(0,100),
-                    "LinkUtilization":random.randint(0,100)
+                    "LinkUtilization":random.randint(50,100)
                 })
 
     # 将转换后的数据保存到JSON文件中
@@ -169,7 +169,7 @@ def drawroute(input_json_file, config, path_results):
                     "rname": "带宽优先",
                     "rname": "BandwidthPriority",
                     "e": ["0", "15", "12"],
-                    "cn": [("0", "15"), ("15", "12")]
+                    "cn": ["0", "15")]
                 },
                 # 其他路径...
             ]
@@ -258,20 +258,44 @@ def drawroute(input_json_file, config, path_results):
                 i['computing']['cpu_power'] = j['computing']['cpu_power']
                 i['computing']['gpu_power'] = j['computing']['gpu_power']
                 i['computing']['gpu_Utilization'] = str(j['computing']['gpu_Utilization']) + '%'
+                i['path_info']=[]
 
     # ---- 新增：处理路径计算结果 ----
     # 统计节点被多少路径经过
     node_path_counts = defaultdict(int)
     path_edges = []
-
+    node_dict = {node['name']: node for node in nodes}  # 新增
+    #node_dict=nodes
     for path in path_results:
         strategy = path.get("rname")
         # 根据策略类型获取颜色，默认灰色（#CCCCCC）
         color = strategy_color_map.get(int(strategy))
+        path_id = path["id"]
+        path_name = path.get("mname", path.get("rname", "Unnamed Path"))  # 优先使用mname
 
         # 记录节点被路径经过的次数
-        for node in path["cn"]:
-            node_path_counts[node] += 1
+        # for node in path["cn"]:
+        #     node_path_counts[node] += 1
+
+        for node_id in path["cn"]:
+            # 统计经过次数
+            node_path_counts[node_id] += 1
+
+            # 获取节点对象
+            node = node_dict.get(str(node_id))  # 确保类型一致
+            if node:
+                # 初始化路径信息列表
+                if 'path_info' not in node:
+                    node['path_info'] = []
+
+                # 避免重复添加相同路径
+                if not any(p['path_id'] == path_id for p in node['path_info']):
+                    node['path_info'].append({
+                        "path_id": path_id,
+                        "path_name": path_name,
+                        "color": color
+                    })
+
 
         # 生成路径边（独立边）
         for src, target in path["e"]:
@@ -292,11 +316,6 @@ def drawroute(input_json_file, config, path_results):
                 "lineStyle": {"color": color,'curveness':-100},  # 根据策略设置颜色
                 "label": {"show": False, "formatter": path["mname"]}
             })
-
-    # # 更新节点大小（根据路径经过次数）
-    # for node in nodes:
-    #     count = node_path_counts.get(int(node["name"]), 0)
-    #     node["symbolSize"] = [80 * (1 + 0.5 * count)] * 2  # 放大系数
 
     for node in nodes:
         count = node_path_counts.get(int(node["name"]), 0)
@@ -369,6 +388,9 @@ def drawroute(input_json_file, config, path_results):
                 # 应用曲率设置
             edge["lineStyle"]["curveness"] = curveness
 
+    for i in nodes:
+        i=node_dict.get(i['name'])
+
     topology_data = {
         "nodes": nodes,
         "links": links+path_edges,
@@ -380,7 +402,6 @@ def drawroute(input_json_file, config, path_results):
             }
         }
     }
-    print(topology_data['path_config'])
     return topology_data
 
 
@@ -396,5 +417,5 @@ if __name__ == "__main__":
     output_file = '../api/topo.json'  # 指定输出文件名
     route = load_json_file('../api/route.json')
     #route = load_json_file('./api/testroute.json')
-    topology_data = drawroute('../api/topo.json', '../api/node_config.json', route)
-    #convert_txt_to_json(input_file, output_file)
+    #topology_data = drawroute('../api/topo.json', '../api/node_config.json', route)
+    convert_txt_to_json(input_file, output_file)
