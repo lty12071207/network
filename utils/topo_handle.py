@@ -26,7 +26,7 @@ def convert_txt_to_json(input_filename, output_filename='output.json'):
                     "weight": random.randint(10, 100),
                     "bw": random.randint(9000, 10000),
                     "delay": round(random.random()*3,2),
-                    "lost": random.randint(0,100),
+                    "lost": random.randint(0,10),
                     "LinkUtilization":random.randint(50,100)
                 })
 
