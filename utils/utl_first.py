@@ -6,7 +6,7 @@ import json
 import time
 
 
-class uNetworkPlanner:
+class NetworkPlanner:
     def __init__(self, num_nodes, num_links, required_compute_nodes=2, min_computing_power=0, min_bandwidth=0):
         """
         初始化网络规划器
@@ -321,16 +321,16 @@ class uNetworkPlanner:
 # 示例用法
 if __name__ == "__main__":
     # 从配置文件中读取网络信息
-    planner = uNetworkPlanner.from_config_file('../api/topo.json', '../api/node_config.json')
+    planner = NetworkPlanner.from_config_file('../api/topo.json', '../api/node_config.json')
     start_time = time.time();
     # 路径规划需求
     source = 0
-    destination = 10
+    destination = 18
     packet_size = 100  # 要处理的数据包大小
-    num_computing_nodes = 2  # 源、目的以及中间3个计算节点（共5个）
+    num_computing_nodes = 3  # 源、目的以及中间3个计算节点（共5个）
 
     # 使用蚁群算法寻找路径
-    path,select_node = planner.ant_colony_optimization(source, destination,  num_computing_nodes,50,5000)
+    path,select_node = planner.ant_colony_optimization(source, destination,  num_computing_nodes,10,10)
 
     if path:
         min_utilization = planner.calculate_total_utilization(path, num_computing_nodes)

@@ -76,61 +76,27 @@
                         </div>
                     `;
                 }
-            }
-<!--            else if (params.dataType === 'node') {-->
-<!--                const {name, storage, computing,cost,path_ids = []} = params.data;-->
-<!--                const pathInfo = topologyData.path_config.strategies;-->
-<!--                return `-->
-<!--                    <div style="text-align: left;">-->
-<!--                        <div>节点: ${name}</div>-->
-<!--                        <div>成本: ${cost}小时/元</div>-->
-<!--                        <div>存储容量: ${storage.capacity}</div>-->
-<!--                        <div>存储性能: ${storage.performance}</div>-->
-<!--                        <div>CPU算力: ${computing.cpu_power}</div>-->
-<!--                        <div>GPU算力: ${computing.gpu_power} TFLOPS</div>-->
-<!--                        <div>节点算力利用率: ${computing.gpu_Utilization}</div>-->
+            } else if (params.dataType === 'node') {
+                const {name, storage, computing,cost,path_ids = []} = params.data;
+                const pathInfo = topologyData.path_config.strategies;
+                return `
+                    <div style="text-align: left;">
+                        <div>节点: ${name}</div>
+                        <div>成本: ${cost}小时/元</div>
+                        <div>存储容量: ${storage.capacity}</div>
+                        <div>存储性能: ${storage.performance}</div>
+                        <div>CPU算力: ${computing.cpu_power}</div>
+                        <div>GPU算力: ${computing.gpu_power} TFLOPS</div>
+                        <div>节点算力利用率: ${computing.gpu_Utilization}</div>
 
-<!--                        <div>经过的路径:-->
-<!--                            ${path_ids.map(id => `-->
-<!--                                <div><span style="color:${pathInfo[id]}">■</span> ${id}</div>-->
-<!--                            `).join('')}-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                `;-->
-<!--            }-->
-               else if (params.dataType === 'node') {
-        const { name, storage, computing, path_info = [] } = params.data;
-
-        // 构建路径信息展示
-        const pathDisplay = path_info.length > 0 ? `
-            <div style="margin-top:8px; border-top:1px solid #666; padding-top:4px;">
-                <div>部署业务 (${path_info.length}个):</div>
-                ${path_info.map(p => `
-                    <div style="display: flex; align-items: center; margin:4px 0;">
-                        <span style="color:${p.color}; font-size:16px; margin-right:4px">■</span>
-                        <div>
-                            <div>${p.path_name}</div>
-                            <div style="font-size:0.8em; color:#999">ID: ${p.path_id}</div>
+                        <div>经过的路径:
+                            ${path_ids.map(id => `
+                                <div><span style="color:${pathInfo[id]}">■</span> ${id}</div>
+                            `).join('')}
                         </div>
                     </div>
-                `).join('')}
-            </div>
-        ` : '<div style="color:#999">未加载任何业务</div>';
-
-        return `
-            <div style="text-align: left; max-width:300px;">
-                <div style="font-weight:bold; margin-bottom:6px;">节点 ${name}</div>
-                <div style="display:grid; grid-template-columns:auto 1fr; gap:4px 8px;">
-                    <span>存储容量:</span><span>${storage.capacity}</span>
-                    <span>存储性能:</span><span>${storage.performance}</span>
-                    <span>CPU算力:</span><span>${computing.cpu_power}</span>
-                    <span>GPU算力:</span><span>${computing.gpu_power} TFLOPS</span>
-                    <span>利用率:</span><span>${computing.gpu_Utilization}</span>
-                </div>
-                ${pathDisplay}
-            </div>
-        `;
-    }
+                `;
+            }
         }
         topologyData.links.forEach(link => {
             const linkColor = (link.lineStyle?.color || '').toLowerCase();

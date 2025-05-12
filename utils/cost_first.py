@@ -6,7 +6,7 @@ import json
 import time
 
 
-class cNetworkPlanner:
+class NetworkPlanner:
     def __init__(self, num_nodes, num_links, required_compute_nodes=2, min_computing_power=0, min_bandwidth=0):
         """
         初始化网络规划器
@@ -287,7 +287,7 @@ class cNetworkPlanner:
                         pheromone[u][v] += delta_pheromone
                         pheromone[v][u] += delta_pheromone
         intermediate_nodes = best_path[1:-1]
-        sorted_nodes = sorted(intermediate_nodes, key=lambda node: self.get_node_cost(node))
+        sorted_nodes = sorted(intermediate_nodes, key=lambda node: planner.get_node_cost(node))
         # 选取成本最小的的前三个节点
         top_three_computing_nodes = sorted_nodes[:3]
         return best_path,top_three_computing_nodes
@@ -335,16 +335,16 @@ class cNetworkPlanner:
 # 示例用法
 if __name__ == "__main__":
     # 从配置文件中读取网络信息
-    planner = cNetworkPlanner.from_config_file('../api/topo.json', '../api/node_config.json')
+    planner = NetworkPlanner.from_config_file('../api/topo.json', '../api/node_config.json')
     start_time = time.time();
     # 路径规划需求
     source = 0
-    destination = 19
+    destination = 18
     packet_size = 100  # 要处理的数据包大小
     num_computing_nodes = 3  # 源、目的以及中间3个计算节点（共5个）
 
     # 使用蚁群算法寻找路径
-    path,select_node= planner.ant_colony_optimization(source, destination,  num_computing_nodes,10,2500)
+    path,select_node= planner.ant_colony_optimization(source, destination,  num_computing_nodes,10,10)
 
     if path:
         min_cost = planner.calculate_total_cost(path, packet_size, num_computing_nodes)

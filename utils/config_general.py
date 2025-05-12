@@ -29,16 +29,16 @@ def generate_node_config():
         # 设置算力需求
         if level == "低":
             node["computing"]["cpu_power"] = f"{random.randint(1, 4)} cores {random.randint(1500, 2250)}MHz"
-            node["computing"]["gpu_power"] = random.randint(80, 100)
-            node["computing"]["gpu_Utilization"] = random.randint(50, 100)
+            node["computing"]["gpu_power"] = random.randint(1, 100)
+            node["computing"]["gpu_Utilization"] = random.randint(0, 100)
         elif level == "中":
             node["computing"]["cpu_power"] = f"{random.randint(4, 12)} cores {random.randint(2000, 2750)}MHz"
             node["computing"]["gpu_power"] = random.randint(101, 500)
-            node["computing"]["gpu_Utilization"] = random.randint(50, 100)
+            node["computing"]["gpu_Utilization"] = random.randint(0, 100)
         else:  # 高
             node["computing"]["cpu_power"] = f"{random.randint(12, 24)} cores {random.randint(2500, 3250)}MHz"
             node["computing"]["gpu_power"] = random.randint(501, 1000)
-            node["computing"]["gpu_Utilization"] = random.randint(50, 100)
+            node["computing"]["gpu_Utilization"] = random.randint(0, 100)
         nodes.append(node)
     return nodes
 
