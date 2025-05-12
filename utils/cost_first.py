@@ -4,7 +4,6 @@ import random
 import numpy as np
 import json
 import time
-import math
 
 
 class cNetworkPlanner:
@@ -92,87 +91,6 @@ class cNetworkPlanner:
 
         return planner
 
-    def find_cost_optimal_route(self, source, destination, num_computing_nodes, min_computing_power, min_bandwidth,
-                                packet_size=100, initial_temp=1000, final_temp=0.1, alpha=0.99):
-        """
-        使用模拟退火算法搜索成本最小路径
-        :param source: 源节点 ID
-        :param destination: 目的节点 ID
-        :param packet_size: 数据包大小
-        :param num_computing_nodes: 计算节点数
-        :param min_computing_power: 最小计算能力
-        :param min_bandwidth: 最小带宽
-        :param initial_temp: 初始温度
-        :param final_temp: 最终温度
-        :param alpha: 降温系数
-        :return: 成本最小路径和成本最小的前 num_computing_nodes 个节点，如果不存在满足条件的路径则返回 None
-        """
-        self.apply_constraints(num_computing_nodes, min_computing_power, min_bandwidth)
-
-        if source not in self.G.nodes() or destination not in self.G.nodes():
-            return None, []
-
-        def get_random_path():
-            # 生成一个随机路径
-            path = [source]
-            current = source
-            while current != destination:
-                neighbors = list(self.G.neighbors(current))
-                if not neighbors:
-                    break
-                next_node = random.choice(neighbors)
-                path.append(next_node)
-                current = next_node
-            return path
-
-        def is_valid_path(path):
-            # 检查路径是否有效
-            if len(path) - 2 < num_computing_nodes or path[-1] != destination:
-                return False
-            intermediates = path[1:-1]
-            valid_nodes = [n for n in intermediates if self.G.nodes[n]['computing_power'] >= min_computing_power]
-            if len(valid_nodes) < num_computing_nodes:
-                return False
-            return self._check_bandwidth(path, min_bandwidth)
-
-        def get_neighbor(path):
-            # 获取当前路径的一个邻居路径
-            if len(path) <= 3:
-                return get_random_path()
-            index = random.randint(1, len(path) - 2)
-            current = path[index]
-            neighbors = list(self.G.neighbors(current))
-            if not neighbors:
-                return path
-            new_node = random.choice(neighbors)
-            new_path = path[:index] + [new_node] + path[index + 1:]
-            return new_path
-
-        # 初始化当前路径和最优路径
-        current_path = get_random_path()
-        while not is_valid_path(current_path):
-            current_path = get_random_path()
-        best_path = current_path
-        best_cost = self.calculate_total_cost(best_path, packet_size, num_computing_nodes)
-
-        temp = initial_temp
-        while temp > final_temp:
-            neighbor_path = get_neighbor(current_path)
-            if is_valid_path(neighbor_path):
-                neighbor_cost = self.calculate_total_cost(neighbor_path, packet_size, num_computing_nodes)
-                cost_diff = neighbor_cost - self.calculate_total_cost(current_path, packet_size, num_computing_nodes)
-                if cost_diff < 0 or random.random() < math.exp(-cost_diff / temp):
-                    current_path = neighbor_path
-                    if neighbor_cost < best_cost:
-                        best_path = neighbor_path
-                        best_cost = neighbor_cost
-            temp *= alpha
-
-        intermediate_nodes = best_path[1:-1]
-        sorted_nodes = sorted(intermediate_nodes, key=lambda node: self.get_node_cost(node))
-        # 选取成本最小的前 num_computing_nodes 个节点
-        top_computing_nodes = sorted_nodes[:num_computing_nodes]
-        return best_path, top_computing_nodes
     def visualize(self, path=None):
         """
         可视化网络拓扑图
@@ -427,18 +345,13 @@ if __name__ == "__main__":
 
     # 使用蚁群算法寻找路径
     path,select_node= planner.ant_colony_optimization(source, destination,  num_computing_nodes,10,2500)
-    path2,select_node2 = planner.find_cost_optimal_route(source, destination,  num_computing_nodes,10,2500)
+
     if path:
         min_cost = planner.calculate_total_cost(path, packet_size, num_computing_nodes)
         print("找到的路径：", path)
 
         print("中间节点：", select_node)
         print("最小成本为", min_cost)
-        min_cost2 = planner.calculate_total_cost(path2, packet_size, num_computing_nodes)
-        print("找到的路径：", path2)
-
-        print("中间节点：", select_node2)
-        print("最小成本为", min_cost2)
         end_time = time.time();
         print('时间差为' + str(end_time - start_time))
 
