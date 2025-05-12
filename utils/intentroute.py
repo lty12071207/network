@@ -534,7 +534,97 @@ class NetworkPlanner:
             total_utilization += self.G.nodes[node]['uti']
 
         return total_utilization
+    def find_loss_optimal_route(self, source, destination, num_computing_nodes,min_computing_power,min_bandwidth,packet_size=100, num_ants=20, max_iter=50,
+                                alpha=1, beta=2, rho=0.5):
+        """
+        使用蚁群算法搜索丢包率最小路径
+        :param source: 源节点 ID
+        :param destination: 目的节点 ID
+        :param packet_size: 数据包大小
+        :param num_computing_nodes: 计算节点数
+        :param num_ants: 蚂蚁数量
+        :param max_iter: 最大迭代次数
+        :param alpha: 信息素重要程度因子
+        :param beta: 启发式因子
+        :param rho: 信息素挥发因子
+        :return: 丢包率最小化路径，如果不存在满足条件的路径则返回 None
+        """
+        self.apply_constraints(num_computing_nodes,min_computing_power,min_bandwidth)
+        num_nodes = len(self.G.nodes())
+        # 初始化信息素矩阵
+        pheromone = np.ones((num_nodes, num_nodes))
+        best_path = None
+        best_cost = float('inf')
 
+        for _ in range(max_iter):
+            all_ant_paths = []
+            all_ant_cost = []
+
+            for _ in range(num_ants):
+                # 初始化蚂蚁路径，从源节点开始
+                path = [source]
+                current = source
+                while current != destination:
+                    # 获取当前节点的所有邻居节点
+                    neighbors = list(self.G.neighbors(current))
+                    # 获取未访问过的邻居节点
+                    unvisited_neighbors = [n for n in neighbors if n not in path]
+                    if not unvisited_neighbors:
+                        break
+                    probabilities = []
+                    for neighbor in unvisited_neighbors:
+                        # 修改为获取边的丢包率
+                        edge_loss = self.G[current][neighbor]['loss']
+                        # 修改为获取节点的丢包率（假设节点也有丢包率属性，若没有可根据实际情况调整）
+                        node_loss = self.G.nodes[neighbor].get('loss', 0)  # 若节点没有丢包率属性，默认设为0
+                        total_loss = node_loss + edge_loss
+                        heuristic = 1 / (total_loss + 1e-6)  # 避免除零错误
+                        pheromone_value = pheromone[current][neighbor]
+                        probability = (pheromone_value ** alpha) * (heuristic ** beta)
+                        probabilities.append(probability)
+                    # 计算概率分布
+                    probabilities = np.array(probabilities) / np.sum(probabilities)
+                    # 根据概率选择下一个节点
+                    next_node = np.random.choice(unvisited_neighbors, p=probabilities)
+                    path.append(next_node)
+                    current = next_node
+
+                if len(path) - 2 >= num_computing_nodes and path[-1] == destination:
+                    all_ant_paths.append(path)
+                    total_loss = self.calculate_total_loss(path)  # 修改为计算总丢包率
+                    all_ant_cost.append(total_loss)
+                    if total_loss < best_cost:
+                        best_cost = total_loss
+                        best_path = path
+
+            # 更新信息素
+            pheromone *= (1 - rho)  # 信息素挥发
+            if all_ant_paths:
+                for path, loss in zip(all_ant_paths, all_ant_cost):
+                    delta_pheromone = 1 / (loss + 1e-6)  # 避免除零错误
+                    for i in range(len(path) - 1):
+                        u, v = path[i], path[i + 1]
+                        pheromone[u][v] += delta_pheromone
+                        pheromone[v][u] += delta_pheromone
+        intermediate_nodes = best_path[1:-1]
+        sorted_nodes = sorted(intermediate_nodes, key=lambda node: self.G.nodes[node].get('loss', 0))  # 根据节点丢包率排序
+        # 选取丢包率最小的的前三个节点
+        top_three_computing_nodes = sorted_nodes[:3]
+        return best_path,top_three_computing_nodes
+
+    def calculate_total_loss(self, path):
+        """
+        计算路径的总丢包率
+        :param path: 路径
+        :return: 总丢包率
+        """
+        total_loss = 0
+        for i in range(len(path) - 1):
+            # 累加边的丢包率
+            total_loss += self.G[path[i]][path[i + 1]]['loss']
+            # 累加节点的丢包率（假设节点也有丢包率属性，若没有可根据实际情况调整）
+            total_loss += self.G.nodes[path[i + 1]].get('loss', 0)
+        return total_loss
 # 示例用法
 if __name__ == "__main__":
     # 从配置文件中读取网络信息
