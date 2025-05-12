@@ -1,262 +1,262 @@
 [
     {
         "id": 0,
-        "cost": 263,
+        "cost": 597,
         "storage": {
-            "capacity": "11TB",
-            "performance": "266MB/s"
+            "capacity": "6TB",
+            "performance": "404MB/s"
         },
         "computing": {
-            "cpu_power": "10 cores 2290MHz",
-            "gpu_power": 477,
-            "gpu_Utilization": 49
+            "cpu_power": "6 cores 2230MHz",
+            "gpu_power": 304,
+            "gpu_Utilization": 57
         }
     },
     {
         "id": 1,
-        "cost": 434,
+        "cost": 983,
         "storage": {
-            "capacity": "22TB",
-            "performance": "953MB/s"
+            "capacity": "4TB",
+            "performance": "102MB/s"
         },
         "computing": {
-            "cpu_power": "18 cores 2647MHz",
-            "gpu_power": 705,
-            "gpu_Utilization": 67
+            "cpu_power": "4 cores 1895MHz",
+            "gpu_power": 83,
+            "gpu_Utilization": 57
         }
     },
     {
         "id": 2,
-        "cost": 171,
+        "cost": 774,
         "storage": {
-            "capacity": "1TB",
-            "performance": "155MB/s"
+            "capacity": "2TB",
+            "performance": "223MB/s"
         },
         "computing": {
-            "cpu_power": "1 cores 1623MHz",
-            "gpu_power": 81,
-            "gpu_Utilization": 38
+            "cpu_power": "2 cores 1658MHz",
+            "gpu_power": 98,
+            "gpu_Utilization": 56
         }
     },
     {
         "id": 3,
-        "cost": 666,
+        "cost": 508,
         "storage": {
-            "capacity": "2TB",
-            "performance": "198MB/s"
+            "capacity": "13TB",
+            "performance": "411MB/s"
         },
         "computing": {
-            "cpu_power": "1 cores 1588MHz",
-            "gpu_power": 49,
-            "gpu_Utilization": 21
-        }
-    },
-    {
-        "id": 4,
-        "cost": 225,
-        "storage": {
-            "capacity": "47TB",
-            "performance": "723MB/s"
-        },
-        "computing": {
-            "cpu_power": "15 cores 2642MHz",
-            "gpu_power": 635,
-            "gpu_Utilization": 81
-        }
-    },
-    {
-        "id": 5,
-        "cost": 327,
-        "storage": {
-            "capacity": "19TB",
-            "performance": "667MB/s"
-        },
-        "computing": {
-            "cpu_power": "16 cores 2785MHz",
-            "gpu_power": 751.0,
-            "gpu_Utilization": 7
-        }
-    },
-    {
-        "id": 6,
-        "cost": 602,
-        "storage": {
-            "capacity": "1TB",
-            "performance": "204MB/s"
-        },
-        "computing": {
-            "cpu_power": "2 cores 1873MHz",
-            "gpu_power": 75,
-            "gpu_Utilization": 86
-        }
-    },
-    {
-        "id": 7,
-        "cost": 470,
-        "storage": {
-            "capacity": "1TB",
-            "performance": "100MB/s"
-        },
-        "computing": {
-            "cpu_power": "4 cores 1819MHz",
-            "gpu_power": 65,
-            "gpu_Utilization": 47
-        }
-    },
-    {
-        "id": 8,
-        "cost": 540,
-        "storage": {
-            "capacity": "6TB",
-            "performance": "394MB/s"
-        },
-        "computing": {
-            "cpu_power": "12 cores 2331MHz",
-            "gpu_power": 354,
-            "gpu_Utilization": 61
-        }
-    },
-    {
-        "id": 9,
-        "cost": 908,
-        "storage": {
-            "capacity": "2TB",
-            "performance": "213MB/s"
-        },
-        "computing": {
-            "cpu_power": "2 cores 2174MHz",
-            "gpu_power": 99,
+            "cpu_power": "4 cores 2157MHz",
+            "gpu_power": 385,
             "gpu_Utilization": 50
         }
     },
     {
-        "id": 10,
-        "cost": 552,
+        "id": 4,
+        "cost": 344,
         "storage": {
-            "capacity": "5TB",
-            "performance": "121MB/s"
+            "capacity": "13TB",
+            "performance": "426MB/s"
         },
         "computing": {
-            "cpu_power": "4 cores 1577MHz",
-            "gpu_power": 55,
-            "gpu_Utilization": 24
+            "cpu_power": "11 cores 2597MHz",
+            "gpu_power": 112,
+            "gpu_Utilization": 71
+        }
+    },
+    {
+        "id": 5,
+        "cost": 124,
+        "storage": {
+            "capacity": "15TB",
+            "performance": "423MB/s"
+        },
+        "computing": {
+            "cpu_power": "6 cores 2407MHz",
+            "gpu_power": 323,
+            "gpu_Utilization": 92
+        }
+    },
+    {
+        "id": 6,
+        "cost": 754,
+        "storage": {
+            "capacity": "4TB",
+            "performance": "148MB/s"
+        },
+        "computing": {
+            "cpu_power": "3 cores 1576MHz",
+            "gpu_power": 99,
+            "gpu_Utilization": 97
+        }
+    },
+    {
+        "id": 7,
+        "cost": 994,
+        "storage": {
+            "capacity": "4TB",
+            "performance": "219MB/s"
+        },
+        "computing": {
+            "cpu_power": "4 cores 2038MHz",
+            "gpu_power": 82,
+            "gpu_Utilization": 66
+        }
+    },
+    {
+        "id": 8,
+        "cost": 696,
+        "storage": {
+            "capacity": "50TB",
+            "performance": "756MB/s"
+        },
+        "computing": {
+            "cpu_power": "18 cores 2682MHz",
+            "gpu_power": 843,
+            "gpu_Utilization": 80
+        }
+    },
+    {
+        "id": 9,
+        "cost": 145,
+        "storage": {
+            "capacity": "48TB",
+            "performance": "904MB/s"
+        },
+        "computing": {
+            "cpu_power": "13 cores 2785MHz",
+            "gpu_power": 902,
+            "gpu_Utilization": 60
+        }
+    },
+    {
+        "id": 10,
+        "cost": 263,
+        "storage": {
+            "capacity": "5TB",
+            "performance": "318MB/s"
+        },
+        "computing": {
+            "cpu_power": "7 cores 2695MHz",
+            "gpu_power": 314,
+            "gpu_Utilization": 98
         }
     },
     {
         "id": 11,
-        "cost": 491,
+        "cost": 908,
         "storage": {
             "capacity": "4TB",
-            "performance": "208MB/s"
+            "performance": "118MB/s"
         },
         "computing": {
-            "cpu_power": "3 cores 1674MHz",
-            "gpu_power": 21,
-            "gpu_Utilization": 15
+            "cpu_power": "1 cores 2149MHz",
+            "gpu_power": 45.0,
+            "gpu_Utilization": 57
         }
     },
     {
         "id": 12,
-        "cost": 764,
+        "cost": 308,
         "storage": {
             "capacity": "16TB",
-            "performance": "623MB/s"
+            "performance": "962MB/s"
         },
         "computing": {
-            "cpu_power": "17 cores 2714MHz",
-            "gpu_power": 598,
-            "gpu_Utilization": 93
+            "cpu_power": "13 cores 3152MHz",
+            "gpu_power": 595,
+            "gpu_Utilization": 97
         }
     },
     {
         "id": 13,
-        "cost": 959,
+        "cost": 701,
         "storage": {
-            "capacity": "5TB",
-            "performance": "179MB/s"
+            "capacity": "43TB",
+            "performance": "614MB/s"
         },
         "computing": {
-            "cpu_power": "1 cores 1973MHz",
-            "gpu_power": 72,
-            "gpu_Utilization": 87
+            "cpu_power": "15 cores 2677MHz",
+            "gpu_power": 897,
+            "gpu_Utilization": 75
         }
     },
     {
         "id": 14,
-        "cost": 495,
+        "cost": 592,
         "storage": {
-            "capacity": "36TB",
-            "performance": "534MB/s"
+            "capacity": "27TB",
+            "performance": "824MB/s"
         },
         "computing": {
-            "cpu_power": "15 cores 3137MHz",
-            "gpu_power": 871.0,
-            "gpu_Utilization": 20
+            "cpu_power": "21 cores 2592MHz",
+            "gpu_power": 564,
+            "gpu_Utilization": 100
         }
     },
     {
         "id": 15,
-        "cost": 923,
+        "cost": 496,
         "storage": {
-            "capacity": "7TB",
-            "performance": "262MB/s"
+            "capacity": "3TB",
+            "performance": "164MB/s"
         },
         "computing": {
-            "cpu_power": "12 cores 2622MHz",
-            "gpu_power": 237,
-            "gpu_Utilization": 67
+            "cpu_power": "4 cores 1754MHz",
+            "gpu_power": 38.0,
+            "gpu_Utilization": 62
         }
     },
     {
         "id": 16,
-        "cost": 636,
+        "cost": 651,
         "storage": {
-            "capacity": "8TB",
-            "performance": "485MB/s"
+            "capacity": "36TB",
+            "performance": "700MB/s"
         },
         "computing": {
-            "cpu_power": "12 cores 2449MHz",
-            "gpu_power": 429,
-            "gpu_Utilization": 58
+            "cpu_power": "16 cores 2502MHz",
+            "gpu_power": 977,
+            "gpu_Utilization": 78
         }
     },
     {
         "id": 17,
-        "cost": 728,
+        "cost": 169,
         "storage": {
-            "capacity": "4TB",
-            "performance": "107MB/s"
+            "capacity": "2TB",
+            "performance": "184MB/s"
         },
         "computing": {
-            "cpu_power": "4 cores 1725MHz",
-            "gpu_power": 44,
-            "gpu_Utilization": 18
+            "cpu_power": "4 cores 1741MHz",
+            "gpu_power": 96,
+            "gpu_Utilization": 100
         }
     },
     {
         "id": 18,
-        "cost": 314,
+        "cost": 357,
         "storage": {
-            "capacity": "1TB",
-            "performance": "169MB/s"
+            "capacity": "13TB",
+            "performance": "435MB/s"
         },
         "computing": {
-            "cpu_power": "2 cores 2099MHz",
-            "gpu_power": 71,
-            "gpu_Utilization": 32
+            "cpu_power": "5 cores 2702MHz",
+            "gpu_power": 456,
+            "gpu_Utilization": 94
         }
     },
     {
         "id": 19,
-        "cost": 618,
+        "cost": 383,
         "storage": {
-            "capacity": "4TB",
-            "performance": "187MB/s"
+            "capacity": "8TB",
+            "performance": "420MB/s"
         },
         "computing": {
-            "cpu_power": "4 cores 2101MHz",
-            "gpu_power": 97,
-            "gpu_Utilization": 90
+            "cpu_power": "7 cores 2741MHz",
+            "gpu_power": 367,
+            "gpu_Utilization": 97
         }
     }
 ]

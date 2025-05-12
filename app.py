@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 import json
-
+from network.temp import createroutejson
 from network.utils.intent_handel import load_json_file
 from utils.intentroute import NetworkPlanner
 from utils.topo_handle import convert_json_to_echarts_topology, drawroute
@@ -40,6 +40,8 @@ def index():
 
 @app.route('/', methods=['GET'])
 def final():
+
+    createroutejson('./api/intent/i3.json')
     route=load_json_file('./api/route.json')
     #route = load_json_file('./api/testroute.json')
     topology_data = drawroute('./api/topo.json', './api/node_config.json',route)

@@ -62,8 +62,10 @@
                         <div>时延: ${params.data.delay}</div>
                     </div>
                 `;
-            } else if (params.dataType === 'node') {
-                const {name, storage, computing,path_ids = []} = params.data;
+            }
+            else if (params.dataType === 'node') {
+                const {name, storage, computing,path_info} = params.data;
+
                 const pathInfo = topologyData.path_config.strategies;
                 return `
                     <div style="text-align: left;">
@@ -81,6 +83,7 @@
                     </div>
                 `;
             }
+
         }
 
 
