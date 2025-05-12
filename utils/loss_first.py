@@ -307,33 +307,7 @@ class NetworkPlanner:
             total_loss += self.G.nodes[path[i + 1]].get('loss', 0)
         return total_loss
 
-    def calculate_total_cost(self, path, packet_size, num_computing_nodes):
-        """
-        计算路径的总成本
-        :param path: 路径
-        :param packet_size: 数据包大小
-        :param num_computing_nodes: 计算节点数
-        :return: 总成本
-        """
-        total_cost = 0
 
-        for i in range(len(path) - 1):
-            total_cost += self.get_link_propagation_cost(path[i], path[i + 1])
-
-        # 提取中间节点
-        intermediate_nodes = path[1:-1]
-        # 根据成本对中间节点进行排序
-        sorted_nodes = sorted(intermediate_nodes, key=lambda node: self.get_node_cost(node))
-        # 选取成本最小的前三个节点
-        top_three_computing_nodes = sorted_nodes[:3]
-
-        # 计算计算能力最强的前三个节点的计算时延
-        for node in top_three_computing_nodes:
-            computing_power_cost = self.get_node_cost(node)
-
-            total_cost += computing_power_cost
-
-        return total_cost
 
 
 # 示例用法
@@ -351,11 +325,11 @@ if __name__ == "__main__":
     path,select_node= planner.ant_colony_optimization(source, destination,  num_computing_nodes,10,10)
 
     if path:
-        min_cost = planner.calculate_total_cost(path, packet_size, num_computing_nodes)
+        min_loss = planner.calculate_total_loss(path)
         print("找到的路径：", path)
 
         print("中间节点：", select_node)
-        print("最小成本为", min_cost)
+        print("最小丢包率为", min_loss)
         end_time = time.time();
         print('时间差为' + str(end_time - start_time))
 

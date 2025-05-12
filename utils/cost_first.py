@@ -401,7 +401,18 @@ class cNetworkPlanner:
             total_cost += computing_power_cost
 
         return total_cost
-
+    def _check_bandwidth(self, path, min_bandwidth):
+        """
+        检查路径上的所有边是否满足最小带宽约束
+        :param path: 路径
+        :param min_bandwidth: 最小带宽
+        :return: 如果路径上所有边都满足带宽约束则返回 True，否则返回 False
+        """
+        for i in range(len(path) - 1):
+            u, v = path[i], path[i + 1]
+            if self.G.has_edge(u, v) and self.G[u][v]['bandwidth'] < min_bandwidth:
+                return False
+        return True
 
 # 示例用法
 if __name__ == "__main__":
@@ -435,3 +446,9 @@ if __name__ == "__main__":
         planner.visualize(path=path)
     else:
         print("不存在路径")
+
+
+
+
+
+# 示例用法
