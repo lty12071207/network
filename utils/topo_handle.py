@@ -2,7 +2,31 @@ import json
 from collections import defaultdict
 import random
 
-from network.utils.intent_handel import load_json_file
+def load_json_file(file_path):
+    """
+    从 JSON 文件中加载数据。
+
+    Args:
+        file_path (str): JSON 文件的路径。
+
+    Returns:
+        dict: 文件中的 JSON 数据转换为字典格式。
+             如果读取失败或文件不存在，则返回 None。
+    """
+    try:
+        # 打开并读取文件
+        with open(file_path, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+        return data
+    except FileNotFoundError:
+        print(f"Error: The file {file_path} does not exist.")
+        return None
+    except json.JSONDecodeError:
+        print(f"Error: The file {file_path} contains invalid JSON.")
+        return None
+    except Exception as e:
+        print(f"An error occurred while reading the file: {e}")
+        return None
 
 
 def convert_txt_to_json(input_filename, output_filename='output.json'):

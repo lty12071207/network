@@ -1,0 +1,24 @@
+{
+    "modality_info": {
+        "modality": "计算密集高通量模态",
+        "method": "3",
+        "status": "success"
+    },
+    "ip_info": {
+        "source_ip": "192.168.0.1",
+        "destination_ip": "192.178.1.4"
+    },
+    "network_qos_constraints": {
+        "bandwidth_requirement": "5Gbps",
+        "latency_requirement": "100ms",
+        "loss_requirement": "0.5%"
+    },
+    "computational_constraints": {
+        "cpu_power": "32 cores 12.5GHz",
+        "gpu_power": "50 TFLOPS"
+    },
+    "storage_constraints": {
+        "storage_capacity": "50PB",
+        "storage_performance": "5GB/s"
+    }
+}
