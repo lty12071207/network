@@ -44,7 +44,7 @@
         "src": "2",
         "dest": "3",
         "weight": 84,
-        "bw": -610.0,
+        "bw": -5610.0,
         "delay": 0.41,
         "lost": 38,
         "LinkUtilization": 90
@@ -64,7 +64,7 @@
         "src": "2",
         "dest": "8",
         "weight": 48,
-        "bw": -3570.0,
+        "bw": -6070.0,
         "delay": 2.29,
         "lost": 83,
         "LinkUtilization": 68
@@ -84,7 +84,7 @@
         "src": "2",
         "dest": "18",
         "weight": 62,
-        "bw": -21592.0,
+        "bw": -29092.0,
         "delay": 1.54,
         "lost": 34,
         "LinkUtilization": 65
