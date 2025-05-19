@@ -1,7 +1,7 @@
 {
   "modality_info":
     { "modality": "时延敏感分布式存算模态",
-      "method": "2",
+      "method": "4",
       "status": "success"
     },
   "ip_info":

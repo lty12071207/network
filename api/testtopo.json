@@ -1,0 +1,302 @@
+[
+    {
+        "label": "Link_0",
+        "src": "0",
+        "dest": "6",
+        "weight": 78,
+        "bw": 9208,
+        "delay": 1.78,
+        "lost": 23,
+        "LinkUtilization": 89
+    },
+    {
+        "label": "Link_1",
+        "src": "0",
+        "dest": "7",
+        "weight": 25,
+        "bw": 9190,
+        "delay": 1.62,
+        "lost": 78,
+        "LinkUtilization": 94
+    },
+    {
+        "label": "Link_2",
+        "src": "1",
+        "dest": "6",
+        "weight": 15,
+        "bw": 9810,
+        "delay": 2.27,
+        "lost": 28,
+        "LinkUtilization": 56
+    },
+    {
+        "label": "Link_3",
+        "src": "1",
+        "dest": "7",
+        "weight": 11,
+        "bw": 9794,
+        "delay": 2.59,
+        "lost": 42,
+        "LinkUtilization": 65
+    },
+    {
+        "label": "Link_4",
+        "src": "2",
+        "dest": "8",
+        "weight": 60,
+        "bw": 9133,
+        "delay": 2.96,
+        "lost": 50,
+        "LinkUtilization": 74
+    },
+    {
+        "label": "Link_5",
+        "src": "2",
+        "dest": "9",
+        "weight": 65,
+        "bw": 9128,
+        "delay": 0.99,
+        "lost": 10,
+        "LinkUtilization": 61
+    },
+    {
+        "label": "Link_6",
+        "src": "3",
+        "dest": "8",
+        "weight": 97,
+        "bw": 9328,
+        "delay": 0.37,
+        "lost": 53,
+        "LinkUtilization": 92
+    },
+    {
+        "label": "Link_7",
+        "src": "3",
+        "dest": "9",
+        "weight": 40,
+        "bw": 9348,
+        "delay": 0.31,
+        "lost": 27,
+        "LinkUtilization": 77
+    },
+    {
+        "label": "Link_8",
+        "src": "4",
+        "dest": "10",
+        "weight": 17,
+        "bw": 9140,
+        "delay": 2.16,
+        "lost": 92,
+        "LinkUtilization": 78
+    },
+    {
+        "label": "Link_9",
+        "src": "4",
+        "dest": "11",
+        "weight": 89,
+        "bw": 9743,
+        "delay": 2.95,
+        "lost": 42,
+        "LinkUtilization": 70
+    },
+    {
+        "label": "Link_10",
+        "src": "5",
+        "dest": "10",
+        "weight": 11,
+        "bw": 9523,
+        "delay": 2.3,
+        "lost": 51,
+        "LinkUtilization": 53
+    },
+    {
+        "label": "Link_11",
+        "src": "5",
+        "dest": "11",
+        "weight": 47,
+        "bw": 9701,
+        "delay": 2.2,
+        "lost": 75,
+        "LinkUtilization": 90
+    },
+    {
+        "label": "Link_12",
+        "src": "6",
+        "dest": "12",
+        "weight": 39,
+        "bw": 9932,
+        "delay": 0.89,
+        "lost": 83,
+        "LinkUtilization": 76
+    },
+    {
+        "label": "Link_13",
+        "src": "6",
+        "dest": "13",
+        "weight": 36,
+        "bw": 9750,
+        "delay": 2.39,
+        "lost": 44,
+        "LinkUtilization": 57
+    },
+    {
+        "label": "Link_14",
+        "src": "7",
+        "dest": "14",
+        "weight": 20,
+        "bw": 9400,
+        "delay": 0.86,
+        "lost": 58,
+        "LinkUtilization": 58
+    },
+    {
+        "label": "Link_15",
+        "src": "7",
+        "dest": "15",
+        "weight": 92,
+        "bw": 9850,
+        "delay": 1.88,
+        "lost": 78,
+        "LinkUtilization": 96
+    },
+    {
+        "label": "Link_16",
+        "src": "8",
+        "dest": "12",
+        "weight": 86,
+        "bw": 9115,
+        "delay": 2.06,
+        "lost": 90,
+        "LinkUtilization": 84
+    },
+    {
+        "label": "Link_17",
+        "src": "8",
+        "dest": "13",
+        "weight": 15,
+        "bw": 9494,
+        "delay": 1.53,
+        "lost": 27,
+        "LinkUtilization": 58
+    },
+    {
+        "label": "Link_18",
+        "src": "9",
+        "dest": "14",
+        "weight": 57,
+        "bw": 9957,
+        "delay": 1.1,
+        "lost": 15,
+        "LinkUtilization": 63
+    },
+    {
+        "label": "Link_19",
+        "src": "9",
+        "dest": "15",
+        "weight": 44,
+        "bw": 9052,
+        "delay": 0.75,
+        "lost": 9,
+        "LinkUtilization": 67
+    },
+    {
+        "label": "Link_20",
+        "src": "10",
+        "dest": "12",
+        "weight": 18,
+        "bw": 9373,
+        "delay": 2.29,
+        "lost": 4,
+        "LinkUtilization": 55
+    },
+    {
+        "label": "Link_21",
+        "src": "10",
+        "dest": "13",
+        "weight": 44,
+        "bw": 9469,
+        "delay": 2.75,
+        "lost": 75,
+        "LinkUtilization": 64
+    },
+    {
+        "label": "Link_22",
+        "src": "11",
+        "dest": "14",
+        "weight": 95,
+        "bw": 9454,
+        "delay": 2.27,
+        "lost": 13,
+        "LinkUtilization": 99
+    },
+    {
+        "label": "Link_23",
+        "src": "11",
+        "dest": "15",
+        "weight": 95,
+        "bw": 9545,
+        "delay": 1.02,
+        "lost": 79,
+        "LinkUtilization": 56
+    },
+    {
+        "label": "Link_24",
+        "src": "0",
+        "dest": "16",
+        "weight": 41,
+        "bw": 9977,
+        "delay": 0.65,
+        "lost": 57,
+        "LinkUtilization": 73
+    },
+    {
+        "label": "Link_25",
+        "src": "1",
+        "dest": "17",
+        "weight": 98,
+        "bw": 9116,
+        "delay": 2.64,
+        "lost": 33,
+        "LinkUtilization": 78
+    },
+    {
+        "label": "Link_26",
+        "src": "2",
+        "dest": "18",
+        "weight": 43,
+        "bw": 9182,
+        "delay": 0.91,
+        "lost": 56,
+        "LinkUtilization": 98
+    },
+    {
+        "label": "Link_27",
+        "src": "5",
+        "dest": "19",
+        "weight": 61,
+        "bw": 9349,
+        "delay": 0.83,
+        "lost": 87,
+        "LinkUtilization": 74
+    },
+    {
+        "label": "Link_28",
+        "src": "2",
+        "dest": "3",
+        "weight": 14,
+        "bw": 9728,
+        "delay": 2.25,
+        "lost": 8,
+        "LinkUtilization": 58
+    },
+    {
+        "label": "Link_29",
+        "src": "4",
+        "dest": "5",
+        "weight": 82,
+        "bw": 9166,
+        "delay": 0.52,
+        "lost": 57,
+        "LinkUtilization": 79
+    }
+]
