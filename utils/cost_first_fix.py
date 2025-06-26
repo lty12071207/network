@@ -130,7 +130,7 @@ class cNetworkPlanner:
         plt.pause(delay)  # 暂停一段时间，方便观察变化
 
     def find_cost_optimal_route(self, source, destination, num_computing_nodes, min_computing_power, min_bandwidth,
-                                packet_size=100, num_ants=20, max_iter=100,
+                                packet_size=100, num_ants=20, max_iter=2,
                                 alpha=1, beta=2, rho=0.5):
         """
         使用蚁群算法搜索成本最小路径
@@ -210,7 +210,7 @@ class cNetworkPlanner:
                 normalized_costs = [(cost - min_cost) / (max_cost - min_cost + 1e-6) for cost in all_ant_cost]
 
                 for path, norm_cost in zip(all_ant_paths, normalized_costs):
-                    delta_pheromone = 1-norm_cost  # 避免除零错误
+                    delta_pheromone = 1 / (norm_cost + 1e-6)  # 避免除零错误
                     for i in range(len(path) - 1):
                         u, v = path[i], path[i + 1]
                         pheromone[u][v] += delta_pheromone

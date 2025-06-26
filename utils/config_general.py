@@ -2,7 +2,7 @@ import json
 import random
 def generate_node_config():
     nodes = []
-    for i in range(20):
+    for i in range(100):
         cost=random.randint(100, 1000)
         node = {
             "id": i,

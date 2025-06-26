@@ -60,6 +60,39 @@ def convert_txt_to_json(input_filename, output_filename='output.json'):
 
     return data
 
+def generate_random_data(num_nodes, output_filename='../api/output.json', max_links_per_node=10):
+    data = []
+    for src in range(num_nodes):
+        # 随机确定当前节点的链路数量
+        num_links = random.randint(1, min(max_links_per_node+40, num_nodes - 1))
+        connected_nodes = set()
+        while len(connected_nodes) < num_links:
+            dest = random.randint(0, num_nodes - 1)
+            if dest != src and dest not in connected_nodes:
+                connected_nodes.add(dest)
+                label = f"Link_{len(data)}"
+                weight = random.randint(10, 100)
+                bw = random.randint(9000, 10000)
+                delay = round(random.random() * 3, 2)
+                lost = random.randint(0, 100)
+                LinkUtilization = random.randint(50, 100)
+                data.append({
+                    "label": label,
+                    "src": src,
+                    "dest": dest,
+                    "weight": weight,
+                    "bw": bw,
+                    "delay": delay,
+                    "lost": lost,
+                    "LinkUtilization": LinkUtilization
+                })
+
+    # 将转换后的数据保存到 JSON 文件中
+    with open(output_filename, 'w') as f:
+        json.dump(data, f, indent=4)
+
+    return data
+
 
 def convert_json_to_echarts_topology(input_json_file,config):
     """
@@ -444,4 +477,4 @@ if __name__ == "__main__":
     #route = load_json_file('../api/route.json')
     #route = load_json_file('./api/testroute.json')
     #topology_data = drawroute('../api/topo.json', '../api/node_config.json', route)
-    convert_txt_to_json(input_file, output_file)
+    generate_random_data(100)

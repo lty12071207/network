@@ -542,17 +542,8 @@ class NetworkPlanner:
 
         return total_cost
 
-    def get_node_cost(self, node_id):
-        """
-        获取指定节点的租用成本
-        :param node_id: 节点ID
-        :return: 节点的租用成本
-        """
-        if node_id not in self.G.nodes():
-            # 若节点不存在，抛出异常
-            raise ValueError("节点 %s 不存在" % node_id)
-        # 直接访问节点的计算能力属性
-        return self.G.nodes[node_id]['cost']
+
+
 
 
     def find_utl_optimal_route(self, source, destination, num_computing_nodes,min_computing_power,min_bandwidth,packet_size=100, num_ants=20, max_iter=50,
@@ -855,7 +846,7 @@ class NetworkPlanner:
 if __name__ == "__main__":
     # 从配置文件中读取网络信息
 
-    planner = NetworkPlanner.from_config_file('../api/testtopo.json','../api/node_config.json')
+    planner = NetworkPlanner.from_config_file('../api/testtopo.json','../api/output.json')
     print(planner.find_time_optimal_route)
     path1,compute_nodes= planner.find_time_optimal_route(
         16,
@@ -890,10 +881,11 @@ if __name__ == "__main__":
     list2=planner.get_path_varible(path2,2)
     list3=planner.get_path_varible(path3,2)
     list4=planner.get_path_varible(path4,2)
-    print(list)
-    print(list2)
-    print(list3)
-    print(list4)
+    print("成本最小化路由策略成本为："+str(list2[1]))
+    print("策略2成本为："+str(list[1]))
+    print("策略3成本为："+str(list3[1]))
+    print("策略4成本为："+str(list4[1]))
+
     # planner.visualize(path,compute_nodes)
 
 
